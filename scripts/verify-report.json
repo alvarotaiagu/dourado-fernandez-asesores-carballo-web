@@ -1,0 +1,563 @@
+{
+  "fecha": "2026-09-16T11:55:44.449Z",
+  "url": "http://127.0.0.1:8952/",
+  "total": 56,
+  "fallos": 0,
+  "resultados": [
+    {
+      "prueba": "las columnas entran descuadradas",
+      "ok": true,
+      "detalle": [
+        {
+          "y": -35,
+          "rot": -1.27
+        },
+        {
+          "y": 58,
+          "rot": 1.1
+        },
+        {
+          "y": -26,
+          "rot": 0.8
+        }
+      ]
+    },
+    {
+      "prueba": "sin errores JS en la portada",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "las columnas quedan alineadas (y=0, rotación 0)",
+      "ok": true,
+      "detalle": [
+        {
+          "y": 0,
+          "rot": 0,
+          "op": "1"
+        },
+        {
+          "y": 0,
+          "rot": 0,
+          "op": "1"
+        },
+        {
+          "y": 0,
+          "rot": 0,
+          "op": "1"
+        }
+      ]
+    },
+    {
+      "prueba": "todas las cifras se resuelven a su valor final",
+      "ok": true,
+      "detalle": [
+        {
+          "t": "3.480,60",
+          "fin": "3.480,60",
+          "ok": true
+        },
+        {
+          "t": "1.250,00",
+          "fin": "1.250,00",
+          "ok": true
+        },
+        {
+          "t": "940,00",
+          "fin": "940,00",
+          "ok": true
+        },
+        {
+          "t": "—",
+          "fin": "—",
+          "ok": true
+        },
+        {
+          "t": "2.115,40",
+          "fin": "2.115,40",
+          "ok": true
+        },
+        {
+          "t": "—",
+          "fin": "—",
+          "ok": true
+        },
+        {
+          "t": "—",
+          "fin": "—",
+          "ok": true
+        },
+        {
+          "t": "—",
+          "fin": "—",
+          "ok": true
+        },
+        {
+          "t": "—",
+          "fin": "—",
+          "ok": true
+        },
+        {
+          "t": "5.670,60",
+          "fin": "5.670,60",
+          "ok": true
+        },
+        {
+          "t": "—",
+          "fin": "—",
+          "ok": true
+        },
+        {
+          "t": "2.115,40",
+          "fin": "2.115,40",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "prueba": "el total cuadra en las dos columnas",
+      "ok": true,
+      "detalle": [
+        "7.786,00",
+        "7.786,00"
+      ]
+    },
+    {
+      "prueba": "la regla se dibuja y el sello ✓ aparece",
+      "ok": true,
+      "detalle": {
+        "regla": 1,
+        "sello": "1"
+      }
+    },
+    {
+      "prueba": "char-reveal del wordmark completado",
+      "ok": true,
+      "detalle": {
+        "chars": 17,
+        "visibles": 17,
+        "oroBg": "linear-gradient",
+        "plata": 2,
+        "texto": "Dourado & Fernández"
+      }
+    },
+    {
+      "prueba": "la D lleva el degradado oro y & y F el plata",
+      "ok": true,
+      "detalle": {
+        "chars": 17,
+        "visibles": 17,
+        "oroBg": "linear-gradient",
+        "plata": 2,
+        "texto": "Dourado & Fernández"
+      }
+    },
+    {
+      "prueba": "el wordmark conserva el texto íntegro en aria-label",
+      "ok": true,
+      "detalle": "Dourado & Fernández"
+    },
+    {
+      "prueba": "sin longtasks >50ms en la intro (tras load)",
+      "ok": true,
+      "detalle": {
+        "todos": [
+          {
+            "inicio": 130,
+            "dur": 162
+          },
+          {
+            "inicio": 299,
+            "dur": 52
+          },
+          {
+            "inicio": 556,
+            "dur": 57
+          }
+        ],
+        "load": 612
+      }
+    },
+    {
+      "prueba": "el aviso de cookies aparece",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "el botón de cookies cierra el aviso de verdad",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "el aviso se recuerda en localStorage",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin longtasks >50ms durante el scroll",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "sin errores JS tras recorrer la página",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "todos los bloques entran y quedan cuadrados",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "el stack avanza de índice y mueve la regla",
+      "ok": true,
+      "detalle": {
+        "indice": "03",
+        "cifra": "1",
+        "marca": 279,
+        "cards": [
+          {
+            "op": 1,
+            "top": 108,
+            "scale": 0.965
+          },
+          {
+            "op": 1,
+            "top": 120,
+            "scale": 0.965
+          },
+          {
+            "op": 1,
+            "top": 132,
+            "scale": 1
+          },
+          {
+            "op": 1,
+            "top": 783,
+            "scale": 1
+          }
+        ]
+      }
+    },
+    {
+      "prueba": "la tarjeta activa es visible y está sobre las anteriores",
+      "ok": true,
+      "detalle": [
+        {
+          "op": 1,
+          "top": 108,
+          "scale": 0.965
+        },
+        {
+          "op": 1,
+          "top": 120,
+          "scale": 0.965
+        },
+        {
+          "op": 1,
+          "top": 132,
+          "scale": 1
+        },
+        {
+          "op": 1,
+          "top": 783,
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "prueba": "las tarjetas tapadas se encogen hacia el fondo",
+      "ok": true,
+      "detalle": [
+        {
+          "op": 1,
+          "top": 108,
+          "scale": 0.965
+        },
+        {
+          "op": 1,
+          "top": 120,
+          "scale": 0.965
+        },
+        {
+          "op": 1,
+          "top": 132,
+          "scale": 1
+        },
+        {
+          "op": 1,
+          "top": 783,
+          "scale": 1
+        }
+      ]
+    },
+    {
+      "prueba": "el renglón de cifra cambia con la tarjeta",
+      "ok": true,
+      "detalle": {
+        "indice": "03",
+        "cifra": "1",
+        "marca": 279,
+        "cards": [
+          {
+            "op": 1,
+            "top": 108,
+            "scale": 0.965
+          },
+          {
+            "op": 1,
+            "top": 120,
+            "scale": 0.965
+          },
+          {
+            "op": 1,
+            "top": 132,
+            "scale": 1
+          },
+          {
+            "op": 1,
+            "top": 783,
+            "scale": 1
+          }
+        ]
+      }
+    },
+    {
+      "prueba": "la valoración cuenta hasta 4,2 y 5 reseñas",
+      "ok": true,
+      "detalle": {
+        "nota": "4,2",
+        "resenas": "5",
+        "regla": 1
+      }
+    },
+    {
+      "prueba": "la regla bajo la cifra se dibuja",
+      "ok": true,
+      "detalle": 1
+    },
+    {
+      "prueba": "los plazos en días cuentan hasta su valor",
+      "ok": true,
+      "detalle": [
+        "30",
+        "31",
+        "20",
+        "90",
+        "20",
+        "25",
+        "20"
+      ]
+    },
+    {
+      "prueba": "se marca un único plazo como próximo",
+      "ok": true,
+      "detalle": "Octubre"
+    },
+    {
+      "prueba": "la cifra de reseñas llega a 4,2",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "no hay iframe de Google antes de pedirlo",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "el mapa se carga solo al pulsar, sin API key",
+      "ok": true,
+      "detalle": "https://www.google.com/maps?q=Dourado%20%26%20Fern%C3%A1ndez%20Asesores%20SL%2C%20R%C3%BAa%20Fomento%2C%2052%2C%2015100%20Carballo%2C%20A%20Coru%C3%B1a&output=embed"
+    },
+    {
+      "prueba": "el aviso legal se abre",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "el aviso legal se cierra",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "la cabecera pasa a tinta clara solo cuando el pie verde queda debajo",
+      "ok": true,
+      "detalle": {
+        "solapa": false,
+        "claro": false
+      }
+    },
+    {
+      "prueba": "reduced-motion: las columnas ya están cuadradas",
+      "ok": true,
+      "detalle": {
+        "columnas": 0,
+        "cifras": true,
+        "total": "7.786,00",
+        "sello": "1",
+        "bloque": "1",
+        "lenis": false,
+        "wm": "1"
+      }
+    },
+    {
+      "prueba": "reduced-motion: cifras, total y sello ya resueltos",
+      "ok": true,
+      "detalle": {
+        "columnas": 0,
+        "cifras": true,
+        "total": "7.786,00",
+        "sello": "1",
+        "bloque": "1",
+        "lenis": false,
+        "wm": "1"
+      }
+    },
+    {
+      "prueba": "reduced-motion: los bloques ya son visibles",
+      "ok": true,
+      "detalle": {
+        "columnas": 0,
+        "cifras": true,
+        "total": "7.786,00",
+        "sello": "1",
+        "bloque": "1",
+        "lenis": false,
+        "wm": "1"
+      }
+    },
+    {
+      "prueba": "reduced-motion: sin smooth scroll (Lenis)",
+      "ok": true,
+      "detalle": {
+        "columnas": 0,
+        "cifras": true,
+        "total": "7.786,00",
+        "sello": "1",
+        "bloque": "1",
+        "lenis": false,
+        "wm": "1"
+      }
+    },
+    {
+      "prueba": "reduced-motion sin errores JS",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "sin JS: los titulares siguen visibles",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin JS: el aviso de cookies no aparece",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin JS: no hay iframe de Google",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin scroll horizontal a 1440px",
+      "ok": true,
+      "detalle": 0
+    },
+    {
+      "prueba": "sin errores JS a 1440px",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "sin scroll horizontal a 1024px",
+      "ok": true,
+      "detalle": 0
+    },
+    {
+      "prueba": "sin errores JS a 1024px",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "sin scroll horizontal a 768px",
+      "ok": true,
+      "detalle": 0
+    },
+    {
+      "prueba": "menú móvil abre a 768px",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "menú móvil cierra al navegar a 768px",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin errores JS a 768px",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "a 400px el hero apila texto y libro en una columna",
+      "ok": true,
+      "detalle": {
+        "apiladas": true,
+        "ancho": 368,
+        "desborda": false,
+        "recortes": 0
+      }
+    },
+    {
+      "prueba": "a 400px el libro cabe sin recortar cifras",
+      "ok": true,
+      "detalle": {
+        "apiladas": true,
+        "ancho": 368,
+        "desborda": false,
+        "recortes": 0
+      }
+    },
+    {
+      "prueba": "sin scroll horizontal a 400px",
+      "ok": true,
+      "detalle": 0
+    },
+    {
+      "prueba": "menú móvil abre a 400px",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "menú móvil cierra al navegar a 400px",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin errores JS a 400px",
+      "ok": true,
+      "detalle": []
+    },
+    {
+      "prueba": "sin scroll horizontal a 360px",
+      "ok": true,
+      "detalle": 0
+    },
+    {
+      "prueba": "menú móvil abre a 360px",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "menú móvil cierra al navegar a 360px",
+      "ok": true,
+      "detalle": null
+    },
+    {
+      "prueba": "sin errores JS a 360px",
+      "ok": true,
+      "detalle": []
+    }
+  ]
+}
