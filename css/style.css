@@ -418,32 +418,50 @@ figcaption { font-size: 0.74rem; color: var(--tinta-3); margin-top: 0.6rem; lett
 .pie-legal { display: flex; gap: 1.4rem; margin: 0; font-size: 0.84rem; }
 .pie-copy { margin-left: auto; font-size: 0.8rem; color: color-mix(in srgb, var(--crema) 60%, transparent); margin-bottom: 0; }
 
-/* ---------- progreso de scroll: la regla y el saldo que cuadra ---------- */
+/* ---------- progreso de scroll: la regla de márgenes ---------- */
 
-.top-progreso {
-  position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--oro);
-  transform-origin: left center; transform: scaleX(0); pointer-events: none;
+.margen {
+  position: fixed; z-index: 40; right: clamp(0.6rem, 1.6vw, 1.6rem); width: 40px;
+  top: calc(var(--alto-top) + 2.5rem); bottom: calc(56px + 2.6rem);   /* deja sitio al WhatsApp */
+  opacity: 0; transform: translateX(8px); pointer-events: none;
 }
-.progreso {
-  position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 40; width: 250px;
-  display: grid; gap: 0.45rem; padding: 0.75rem 0.9rem 0.7rem;
-  background: color-mix(in srgb, var(--papel-claro) 94%, transparent); backdrop-filter: blur(8px);
-  border: 1px solid var(--plata); border-radius: var(--radio);
-  box-shadow: 0 18px 36px -24px color-mix(in srgb, var(--verde) 55%, transparent);
-  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tinta-3);
-  opacity: 0; transform: translateY(12px); pointer-events: none;
+.no-js .margen, .no-js .whatsapp-wrap { display: none; }
+.margen-linea { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--plata-oscura); }
+.margen-tick {
+  position: absolute; left: 50%; top: 0; width: 11px; height: 2px; background: var(--oro);
+  transform: translate(-50%, -1px); box-shadow: 0 0 0 3px var(--crema); will-change: top;
 }
-.no-js .progreso, .no-js .top-progreso, .no-js .whatsapp-wrap { display: none; }
-.progreso-asiento { display: flex; justify-content: space-between; gap: 0.6rem; white-space: nowrap; overflow: hidden; }
-.progreso-asiento b { color: var(--verde); font-weight: 600; }
-.progreso-asiento span { overflow: hidden; text-overflow: ellipsis; letter-spacing: 0.12em; }
-.progreso-regla { position: relative; height: 1px; background: var(--plata); }
-.progreso-marca { position: absolute; inset: 0; background: var(--oro); transform-origin: left center; transform: scaleX(0); }
-.progreso-saldo { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; letter-spacing: 0; text-transform: none; }
-.progreso-saldo .serif { font-size: 1.2rem; color: var(--tinta); font-variant-numeric: tabular-nums; font-weight: 500; line-height: 1; transition: color 0.4s; }
-.progreso-check { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; color: var(--oro-tinta); opacity: 0; transform: translateX(6px); transition: opacity 0.4s, transform 0.4s; }
-.progreso--cuadra .progreso-check { opacity: 1; transform: none; }
-.progreso--cuadra .progreso-saldo .serif { color: var(--oro-tinta); }
+.margen-marca {
+  position: absolute; left: 0; width: 100%; height: 26px; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center; pointer-events: auto;
+}
+.margen-marca i { position: absolute; left: 50%; width: 7px; height: 1px; background: var(--plata-oscura); transform: translateX(-50%); transition: width 0.3s, background-color 0.3s; }
+.margen-marca b {
+  position: absolute; right: calc(100% - 4px); font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 0, "WONK" 0;
+  font-weight: 500; font-size: 0.82rem; color: var(--plata-oscura); line-height: 1;
+  transform: translate(8px, 2px) rotate(3deg);
+  transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.2, 1.15), color 0.4s;
+}
+.margen-marca.cuadra b { color: var(--tinta); transform: none; }
+.margen-marca.cuadra i { background: var(--oro); width: 11px; }
+.margen-marca.actual b, .margen-marca:hover b { color: var(--oro-tinta); }
+.margen-nombre {
+  position: absolute; right: calc(100% + 1.6rem); white-space: nowrap; font-size: 0.64rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--tinta-3); opacity: 0; transform: translateX(6px); transition: opacity 0.3s, transform 0.3s;
+}
+.margen-marca.actual .margen-nombre, .margen-marca:hover .margen-nombre { opacity: 1; transform: none; }
+.top--claro ~ * .margen-marca b { color: var(--plata); }
+.margen--pie .margen-linea { background: color-mix(in srgb, var(--plata) 45%, transparent); }
+.margen--pie .margen-marca.cuadra b { color: var(--crema); }
+.margen--pie .margen-nombre { color: color-mix(in srgb, var(--crema) 70%, transparent); }
+.margen--pie .margen-tick { box-shadow: 0 0 0 3px var(--verde-oscuro); }
+@media (max-width: 760px) {
+  /* móvil: solo el punto en el margen, con algo de inercia */
+  .margen { width: 12px; right: 0.55rem; top: calc(var(--alto-top) + 1.5rem); bottom: calc(56px + 2rem); }
+  .margen-linea { background: color-mix(in srgb, var(--plata-oscura) 55%, transparent); }
+  .margen-tick { width: 9px; height: 9px; border-radius: 50%; transform: translate(-50%, -50%); }
+  .margen-marca { display: none; }
+}
 
 /* ---------- WhatsApp flotante ---------- */
 
@@ -499,7 +517,7 @@ html.lenis, html.lenis body { height: auto; }
   .gsap .regla-cifra, .gsap .libro-regla { transform: none; }
   .lc.cifra { color: var(--tinta); font-style: normal; }
   .hero-scroll span { animation: none; transform: none; }
-  .top, .btn, .top-nav a::after, .menu-btn span, .whatsapp-etiqueta, .progreso-check, .progreso-saldo .serif { transition: none; }
+  .top, .btn, .top-nav a::after, .menu-btn span, .whatsapp-etiqueta, .margen-marca b, .margen-marca i, .margen-nombre { transition: none; }
 }
 
 /* ---------- responsive ---------- */
@@ -547,7 +565,6 @@ html.lenis, html.lenis body { height: auto; }
   .pie-datos { grid-template-columns: 1fr; }
   .pie-copy { margin-left: 0; }
   .cookie-banner { left: 0.6rem; right: 0.6rem; bottom: 0.6rem; }
-  .progreso { display: none; }   /* en móvil queda la regla de oro bajo la cabecera */
   .whatsapp-wrap { right: 0.9rem; bottom: 0.9rem; }
   .tarjeta-cab, .tarjeta-cuerpo { padding-left: 1.3rem; padding-right: 1.3rem; }
   .tarjeta-cab { margin-right: 1.3rem; }

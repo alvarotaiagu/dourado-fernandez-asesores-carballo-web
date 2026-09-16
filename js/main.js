@@ -342,69 +342,76 @@
     if (candidata) candidata.classList.add("proximo");
   })();
 
-  /* ---------- progreso de scroll: el saldo que cuadra ---------- */
+  /* ---------- progreso de scroll: la regla de márgenes ---------- */
 
-  var progreso = document.querySelector(".progreso");
-  var topProgreso = document.querySelector(".top-progreso");
+  var margen = document.querySelector(".margen");
   var whatsapp = document.querySelector(".whatsapp-wrap");
-  var progMarca = progreso && progreso.querySelector(".progreso-marca");
-  var progCifra = progreso && progreso.querySelector("[data-progreso-cifra]");
-  var progNum = progreso && progreso.querySelector("[data-progreso-num]");
-  var progNombre = progreso && progreso.querySelector("[data-progreso-nombre]");
-  var SALDO_FINAL = 7786;
 
-  if (progreso && topProgreso) {
+  if (margen) {
+    var tick = margen.querySelector(".margen-tick");
+    var secciones = Array.prototype.slice.call(document.querySelectorAll("main .seccion"));
+    var marcas = secciones.map(function (sec, i) {
+      var h2 = sec.querySelector("h2");
+      var nombre = h2 ? (h2.getAttribute("aria-label") || h2.textContent.trim()) : "";
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "margen-marca";
+      b.setAttribute("aria-label", "Ir a " + nombre);
+      b.innerHTML = "<i></i><b>" + String(i + 1).padStart(2, "0") + "</b><span class=\"margen-nombre\">" + nombre + "</span>";
+      b.addEventListener("click", function () { irA("#" + sec.id); });
+      margen.appendChild(b);
+      return { el: b, sec: sec, p: 0 };
+    });
+
+    /* cada marca se coloca en la regla según la posición de su sección en el scroll total */
+    function colocarMarcas() {
+      var max = Math.max(1, ScrollTrigger.maxScroll(window));
+      marcas.forEach(function (m) {
+        m.p = Math.min(1, Math.max(0, (m.sec.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.45) / max));
+        m.el.style.top = (m.p * 100) + "%";
+      });
+    }
+
     var suave = { p: 0 };
-    var ultimaCifra = "";
-    var pintarProgreso = function () {
-      var p = suave.p;
-      gsap.set([topProgreso, progMarca], { scaleX: p });
-      var texto = formatear(SALDO_FINAL * p, 2);
-      if (texto !== ultimaCifra) { progCifra.textContent = texto; ultimaCifra = texto; }
-      progreso.classList.toggle("progreso--cuadra", p > 0.985);
+    var pintarMargen = function () {
+      tick.style.top = (suave.p * 100) + "%";
+      marcas.forEach(function (m) { m.el.classList.toggle("cuadra", suave.p >= m.p - 0.002); });
     };
-    var irProgreso = reduce
-      ? function (p) { suave.p = p; pintarProgreso(); }
-      : gsap.quickTo(suave, "p", { duration: 0.55, ease: "power3.out", onUpdate: pintarProgreso });
+    var irMargen = reduce
+      ? function (p) { suave.p = p; pintarMargen(); }
+      : gsap.quickTo(suave, "p", { duration: movil ? 0.9 : 0.55, ease: "power3.out", onUpdate: pintarMargen });
 
     ScrollTrigger.create({
       trigger: document.body, start: "top top", end: "bottom bottom",
-      onUpdate: function (self) { irProgreso(self.progress); }
+      onUpdate: function (self) { irMargen(self.progress); },
+      onRefresh: colocarMarcas
     });
-    pintarProgreso();
+    colocarMarcas();
+    pintarMargen();
 
-    /* el asiento actual */
-    document.querySelectorAll("main .seccion").forEach(function (sec) {
-      var eyebrow = sec.querySelector(".eyebrow");
-      var h2 = sec.querySelector("h2");
-      if (!eyebrow || !h2) return;
-      var num = eyebrow.textContent.trim();
-      var nombre = h2.getAttribute("aria-label") || h2.textContent.trim();
+    /* la marca de la sección actual muestra su nombre */
+    marcas.forEach(function (m, i) {
       ScrollTrigger.create({
-        trigger: sec, start: "top 50%", end: "bottom 50%",
-        onToggle: function (self) {
-          if (!self.isActive || progNum.textContent === num) return;
-          if (reduce) { progNum.textContent = num; progNombre.textContent = nombre; return; }
-          gsap.to([progNum, progNombre], {
-            opacity: 0, y: -4, duration: 0.18, ease: "power2.in", overwrite: true,
-            onComplete: function () {
-              progNum.textContent = num; progNombre.textContent = nombre;
-              gsap.fromTo([progNum, progNombre], { opacity: 0, y: 5 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" });
-            }
-          });
-        }
+        trigger: m.sec, start: "top 50%",
+        /* la última sección sigue activa hasta el final de la página (el pie no tiene marca) */
+        end: i === marcas.length - 1 ? function () { return ScrollTrigger.maxScroll(window) + 50; } : "bottom 50%",
+        onToggle: function (self) { m.el.classList.toggle("actual", self.isActive); }
       });
     });
 
-    /* la ficha y el WhatsApp aparecen al dejar atrás la portada */
-    var flotantes = [progreso, whatsapp].filter(Boolean);
+    /* sobre el pie verde, la regla pasa a tinta clara */
+    ScrollTrigger.create({
+      trigger: ".pie", start: "top 60%",
+      onToggle: function (self) { margen.classList.toggle("margen--pie", self.isActive); }
+    });
+
+    /* la regla y el WhatsApp aparecen al dejar atrás la portada */
+    var flotantes = [margen, whatsapp].filter(Boolean);
     if (reduce) {
-      gsap.set(flotantes, { opacity: 1, y: 0 });
+      gsap.set(flotantes, { opacity: 1, x: 0, y: 0 });
     } else {
-      /* solo importa cruzar el inicio hacia abajo (aparecen) o hacia arriba (se van):
-         con onToggle se irían también al llegar al final de la página (progress 1) */
       var mostrarFlotantes = function (si) {
-        gsap.to(flotantes, { opacity: si ? 1 : 0, y: si ? 0 : 12, duration: 0.5, ease: "power3.out", stagger: 0.08, overwrite: true });
+        gsap.to(flotantes, { opacity: si ? 1 : 0, x: 0, y: si ? 0 : 12, duration: 0.5, ease: "power3.out", stagger: 0.08, overwrite: true });
       };
       ScrollTrigger.create({
         trigger: ".marquee", start: "top 92%",
@@ -439,6 +446,17 @@
   /* las fuentes cambian las medidas: se recalcula todo cuando cargan */
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+  }
+  /* y si la página cambia de alto (p. ej. al insertar el mapa), las marcas de la
+     regla y los triggers se recolocan */
+  if (window.ResizeObserver) {
+    var altoAnterior = document.body.scrollHeight, esperaRefresh = null;
+    new ResizeObserver(function () {
+      if (document.body.scrollHeight === altoAnterior) return;
+      altoAnterior = document.body.scrollHeight;
+      clearTimeout(esperaRefresh);
+      esperaRefresh = setTimeout(function () { ScrollTrigger.refresh(); }, 150);
+    }).observe(document.body);
   }
 
   iniciarBasico();

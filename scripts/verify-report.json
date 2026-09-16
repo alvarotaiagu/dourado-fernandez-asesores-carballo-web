@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-09-16T12:20:47.801Z",
+  "fecha": "2026-09-16T13:15:38.758Z",
   "url": "http://127.0.0.1:8952/",
   "total": 66,
   "fallos": 0,
@@ -9,8 +9,8 @@
       "ok": true,
       "detalle": [
         {
-          "y": -27,
-          "rot": -1
+          "y": -38,
+          "rot": -1.4
         },
         {
           "y": 58,
@@ -163,21 +163,21 @@
       "detalle": {
         "todos": [
           {
-            "inicio": 153,
-            "dur": 119
+            "inicio": 145,
+            "dur": 144
           }
         ],
-        "load": 525
+        "load": 483
       }
     },
     {
-      "prueba": "en la portada los flotantes están ocultos y el saldo a 0,00",
+      "prueba": "en la portada los flotantes están ocultos, el tick arriba y hay 6 marcas",
       "ok": true,
       "detalle": {
-        "prog": 0,
+        "margen": 0,
         "wa": 0,
-        "regla": 0,
-        "saldo": "0,00"
+        "tick": 0,
+        "marcas": 6
       }
     },
     {
@@ -390,52 +390,44 @@
       }
     },
     {
-      "prueba": "al final del scroll la regla de oro llega al 100 %",
+      "prueba": "al final del scroll el tick llega abajo y las 6 marcas se han cuadrado",
       "ok": true,
       "detalle": {
-        "prog": 1,
+        "margen": 1,
         "wa": 1,
-        "regla": 1,
-        "marca": 1,
-        "saldo": "7.786,00",
-        "cuadra": true,
-        "check": 1,
-        "asiento": "Asiento 06",
+        "tick": 100,
+        "cuadradas": 6,
+        "actual": "06",
+        "pie": true,
+        "alineadas": true,
         "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
       }
     },
     {
-      "prueba": "el saldo del progreso cuadra en 7.786,00 con ✓",
+      "prueba": "la marca actual es la 06 y la regla pasa a tinta clara sobre el pie",
       "ok": true,
       "detalle": {
-        "prog": 1,
+        "margen": 1,
         "wa": 1,
-        "regla": 1,
-        "marca": 1,
-        "saldo": "7.786,00",
-        "cuadra": true,
-        "check": 1,
-        "asiento": "Asiento 06",
+        "tick": 100,
+        "cuadradas": 6,
+        "actual": "06",
+        "pie": true,
+        "alineadas": true,
         "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
       }
     },
     {
-      "prueba": "la ficha de progreso muestra el último asiento",
-      "ok": true,
-      "detalle": "Asiento 06"
-    },
-    {
-      "prueba": "la ficha de progreso y el WhatsApp son visibles fuera de la portada",
+      "prueba": "la regla de márgenes y el WhatsApp son visibles fuera de la portada",
       "ok": true,
       "detalle": {
-        "prog": 1,
+        "margen": 1,
         "wa": 1,
-        "regla": 1,
-        "marca": 1,
-        "saldo": "7.786,00",
-        "cuadra": true,
-        "check": 1,
-        "asiento": "Asiento 06",
+        "tick": 100,
+        "cuadradas": 6,
+        "actual": "06",
+        "pie": true,
+        "alineadas": true,
         "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
       }
     },
@@ -445,13 +437,18 @@
       "detalle": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
     },
     {
-      "prueba": "a mitad de página el saldo va por la mitad y aún no cuadra",
+      "prueba": "a mitad de página el tick va por la mitad y solo parte de las marcas están cuadradas",
       "ok": true,
       "detalle": {
-        "saldo": 3966.14,
-        "cuadra": false,
-        "asiento": "Asiento 02"
+        "cuadradas": 2,
+        "tick": 50.0052,
+        "pie": false
       }
+    },
+    {
+      "prueba": "pulsar una marca lleva a su sección",
+      "ok": true,
+      "detalle": 10.390625
     },
     {
       "prueba": "la etiqueta del WhatsApp se despliega al pasar el ratón",
@@ -514,11 +511,11 @@
       }
     },
     {
-      "prueba": "reduced-motion: el progreso sigue el scroll sin suavizado y el WhatsApp está visible",
+      "prueba": "reduced-motion: la regla sigue el scroll sin suavizado y el WhatsApp está visible",
       "ok": true,
       "detalle": {
-        "saldo": "7.786,00",
-        "regla": 1,
+        "tick": 100,
+        "cuadradas": 6,
         "wa": 1
       }
     },
@@ -603,12 +600,14 @@
       }
     },
     {
-      "prueba": "a 400px se oculta la ficha de progreso, queda la regla y el WhatsApp cabe en pantalla",
+      "prueba": "a 400px la regla se reduce al punto, sin marcas y sin solapar el WhatsApp",
       "ok": true,
       "detalle": {
-        "fichaOculta": true,
-        "waVisible": true,
-        "regla": 0.5336
+        "marcasOcultas": true,
+        "punto": true,
+        "tickVisible": true,
+        "sinSolape": true,
+        "waVisible": true
       }
     },
     {

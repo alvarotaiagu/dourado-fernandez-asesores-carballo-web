@@ -92,14 +92,14 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
 
     await page.screenshot({ path: path.join(CAPS, 'hero-1440.png') });
 
-    /* en la portada, la ficha de progreso y el WhatsApp aún no se ven y el saldo está a 0 */
+    /* en la portada, la regla de márgenes y el WhatsApp aún no se ven y el tick está arriba */
     const flotAntes = await page.evaluate(() => ({
-      prog: parseFloat(getComputedStyle(document.querySelector('.progreso')).opacity),
+      margen: parseFloat(getComputedStyle(document.querySelector('.margen')).opacity),
       wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity),
-      regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a,
-      saldo: document.querySelector('[data-progreso-cifra]').textContent.trim()
+      tick: parseFloat(document.querySelector('.margen-tick').style.top),
+      marcas: document.querySelectorAll('.margen-marca').length
     }));
-    ok('en la portada los flotantes están ocultos y el saldo a 0,00', flotAntes.prog < 0.05 && flotAntes.wa < 0.05 && flotAntes.regla < 0.02 && flotAntes.saldo === '0,00', flotAntes);
+    ok('en la portada los flotantes están ocultos, el tick arriba y hay 6 marcas', flotAntes.margen < 0.05 && flotAntes.wa < 0.05 && flotAntes.tick < 1 && flotAntes.marcas === 6, flotAntes);
 
     /* ---------- 2. cookies ---------- */
     ok('el aviso de cookies aparece', await page.isVisible('.cookie-banner'));
@@ -220,34 +220,38 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     }));
     ok('la cabecera pasa a tinta clara solo cuando el pie verde queda debajo', pie.claro === pie.solapa, pie);
 
-    /* ---------- 7b. progreso de scroll y WhatsApp ---------- */
-    await page.waitForTimeout(700);
+    /* ---------- 7b. regla de márgenes y WhatsApp ---------- */
+    await page.waitForTimeout(900);
     const flotFin = await page.evaluate(() => ({
-      prog: parseFloat(getComputedStyle(document.querySelector('.progreso')).opacity),
+      margen: parseFloat(getComputedStyle(document.querySelector('.margen')).opacity),
       wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity),
-      regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a,
-      marca: new DOMMatrix(getComputedStyle(document.querySelector('.progreso-marca')).transform).a,
-      saldo: document.querySelector('[data-progreso-cifra]').textContent.trim(),
-      cuadra: document.querySelector('.progreso').classList.contains('progreso--cuadra'),
-      check: parseFloat(getComputedStyle(document.querySelector('.progreso-check')).opacity),
-      asiento: document.querySelector('[data-progreso-num]').textContent.trim(),
+      tick: parseFloat(document.querySelector('.margen-tick').style.top),
+      cuadradas: document.querySelectorAll('.margen-marca.cuadra').length,
+      actual: document.querySelector('.margen-marca.actual b') ? document.querySelector('.margen-marca.actual b').textContent : null,
+      pie: document.querySelector('.margen').classList.contains('margen--pie'),
+      alineadas: Array.from(document.querySelectorAll('.margen-marca.cuadra b')).every(b => { const m = new DOMMatrix(getComputedStyle(b).transform); return Math.abs(m.e) < 0.5 && Math.abs(Math.atan2(m.b, m.a)) < 0.002; }),
       href: document.querySelector('.whatsapp').href
     }));
-    ok('al final del scroll la regla de oro llega al 100 %', flotFin.regla > 0.99 && flotFin.marca > 0.99, flotFin);
-    ok('el saldo del progreso cuadra en 7.786,00 con ✓', flotFin.saldo === '7.786,00' && flotFin.cuadra && flotFin.check > 0.95, flotFin);
-    ok('la ficha de progreso muestra el último asiento', flotFin.asiento === 'Asiento 06', flotFin.asiento);
-    ok('la ficha de progreso y el WhatsApp son visibles fuera de la portada', flotFin.prog > 0.95 && flotFin.wa > 0.95, flotFin);
+    ok('al final del scroll el tick llega abajo y las 6 marcas se han cuadrado', flotFin.tick > 99 && flotFin.cuadradas === 6 && flotFin.alineadas, flotFin);
+    ok('la marca actual es la 06 y la regla pasa a tinta clara sobre el pie', flotFin.actual === '06' && flotFin.pie, flotFin);
+    ok('la regla de márgenes y el WhatsApp son visibles fuera de la portada', flotFin.margen > 0.95 && flotFin.wa > 0.95, flotFin);
     ok('el WhatsApp enlaza a wa.me con el teléfono del despacho', flotFin.href.startsWith('https://wa.me/34981702760'), flotFin.href);
 
-    /* a mitad de página el saldo va por la mitad y el asiento es intermedio */
+    /* a mitad de página: unas marcas cuadradas y otras no, y las marcas llevan a su sección */
     await page.evaluate(() => window.scrollTo(0, (document.body.scrollHeight - innerHeight) * 0.5));
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(1000);
     const flotMitad = await page.evaluate(() => ({
-      saldo: parseFloat(document.querySelector('[data-progreso-cifra]').textContent.replace('.', '').replace(',', '.')),
-      cuadra: document.querySelector('.progreso').classList.contains('progreso--cuadra'),
-      asiento: document.querySelector('[data-progreso-num]').textContent.trim()
+      cuadradas: document.querySelectorAll('.margen-marca.cuadra').length,
+      tick: parseFloat(document.querySelector('.margen-tick').style.top),
+      pie: document.querySelector('.margen').classList.contains('margen--pie')
     }));
-    ok('a mitad de página el saldo va por la mitad y aún no cuadra', flotMitad.saldo > 3500 && flotMitad.saldo < 4300 && !flotMitad.cuadra && flotMitad.asiento !== 'Asiento 01' && flotMitad.asiento !== 'Asiento 06', flotMitad);
+    ok('a mitad de página el tick va por la mitad y solo parte de las marcas están cuadradas', flotMitad.tick > 40 && flotMitad.tick < 60 && flotMitad.cuadradas > 1 && flotMitad.cuadradas < 6 && !flotMitad.pie, flotMitad);
+    await page.click('.margen-marca:nth-of-type(4)');
+    await page.waitForTimeout(1600);
+    const salto = await page.evaluate(() => Math.abs(document.querySelector('#equipo').getBoundingClientRect().top));
+    ok('pulsar una marca lleva a su sección', salto < 60, salto);
+    await page.evaluate(() => window.scrollTo(0, (document.body.scrollHeight - innerHeight) * 0.5));
+    await page.waitForTimeout(800);
 
     /* la etiqueta del WhatsApp se despliega al pasar el ratón */
     const anchoAntes = await page.evaluate(() => document.querySelector('.whatsapp').getBoundingClientRect().width);
@@ -255,7 +259,7 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     await page.waitForTimeout(700);
     const anchoDespues = await page.evaluate(() => document.querySelector('.whatsapp').getBoundingClientRect().width);
     ok('la etiqueta del WhatsApp se despliega al pasar el ratón', anchoDespues > anchoAntes + 80, { anchoAntes, anchoDespues });
-    await page.screenshot({ path: path.join(CAPS, 'progreso-1440.png') });
+    await page.screenshot({ path: path.join(CAPS, 'regla-1440.png') });
     await page.screenshot({ path: path.join(CAPS, 'pie-1440.png') });
 
     await page.close();
@@ -288,11 +292,11 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(500);
     const rmProg = await page.evaluate(() => ({
-      saldo: document.querySelector('[data-progreso-cifra]').textContent.trim(),
-      regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a,
+      tick: parseFloat(document.querySelector('.margen-tick').style.top),
+      cuadradas: document.querySelectorAll('.margen-marca.cuadra').length,
       wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity)
     }));
-    ok('reduced-motion: el progreso sigue el scroll sin suavizado y el WhatsApp está visible', rmProg.saldo === '7.786,00' && rmProg.regla > 0.99 && rmProg.wa > 0.95, rmProg);
+    ok('reduced-motion: la regla sigue el scroll sin suavizado y el WhatsApp está visible', rmProg.tick > 99 && rmProg.cuadradas === 6 && rmProg.wa > 0.95, rmProg);
     ok('reduced-motion sin errores JS', page.errores.length === 0, page.errores);
     await page.screenshot({ path: path.join(CAPS, 'reduced-motion.png') });
     await page.close();
@@ -334,13 +338,18 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
       await page.waitForTimeout(900);
       const flotMovil = await page.evaluate(() => {
         const wa = document.querySelector('.whatsapp').getBoundingClientRect();
+        const tick = document.querySelector('.margen-tick');
+        const t = tick.getBoundingClientRect();
+        const m = document.querySelector('.margen').getBoundingClientRect();
         return {
-          fichaOculta: getComputedStyle(document.querySelector('.progreso')).display === 'none',
-          waVisible: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity) > 0.95 && wa.right <= innerWidth && wa.bottom <= innerHeight,
-          regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a
+          marcasOcultas: Array.from(document.querySelectorAll('.margen-marca')).every(b => getComputedStyle(b).display === 'none'),
+          punto: getComputedStyle(tick).borderRadius === '50%' && Math.round(t.width) === 9,
+          tickVisible: t.right <= innerWidth && t.top > 0,
+          sinSolape: m.bottom < wa.top,
+          waVisible: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity) > 0.95 && wa.right <= innerWidth && wa.bottom <= innerHeight
         };
       });
-      ok('a 400px se oculta la ficha de progreso, queda la regla y el WhatsApp cabe en pantalla', flotMovil.fichaOculta && flotMovil.waVisible && flotMovil.regla > 0.3, flotMovil);
+      ok('a 400px la regla se reduce al punto, sin marcas y sin solapar el WhatsApp', flotMovil.marcasOcultas && flotMovil.punto && flotMovil.tickVisible && flotMovil.sinSolape && flotMovil.waVisible, flotMovil);
       await page.screenshot({ path: path.join(CAPS, 'hero-400.png') });
     }
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
