@@ -1,7 +1,7 @@
 {
-  "fecha": "2026-09-16T13:15:38.758Z",
+  "fecha": "2026-09-16T13:28:56.484Z",
   "url": "http://127.0.0.1:8952/",
-  "total": 66,
+  "total": 68,
   "fallos": 0,
   "resultados": [
     {
@@ -163,21 +163,38 @@
       "detalle": {
         "todos": [
           {
-            "inicio": 145,
-            "dur": 144
+            "inicio": 221,
+            "dur": 139
           }
         ],
-        "load": 483
+        "load": 658
       }
     },
     {
-      "prueba": "en la portada los flotantes están ocultos, el tick arriba y hay 6 marcas",
+      "prueba": "en la portada la regla de progreso está oculta y hay 6 marcas",
       "ok": true,
       "detalle": {
         "margen": 0,
-        "wa": 0,
+        "wa": 1,
         "tick": 0,
-        "marcas": 6
+        "marcas": 6,
+        "solapaConCookie": false
+      }
+    },
+    {
+      "prueba": "el WhatsApp es visible desde la carga, sin esperar a hacer scroll",
+      "ok": true,
+      "detalle": 1
+    },
+    {
+      "prueba": "el aviso de cookies (abierto) no tapa el botón de WhatsApp",
+      "ok": true,
+      "detalle": {
+        "margen": 0,
+        "wa": 1,
+        "tick": 0,
+        "marcas": 6,
+        "solapaConCookie": false
       }
     },
     {

@@ -93,13 +93,21 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     await page.screenshot({ path: path.join(CAPS, 'hero-1440.png') });
 
     /* en la portada, la regla de márgenes y el WhatsApp aún no se ven y el tick está arriba */
-    const flotAntes = await page.evaluate(() => ({
-      margen: parseFloat(getComputedStyle(document.querySelector('.margen')).opacity),
-      wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity),
-      tick: parseFloat(document.querySelector('.margen-tick').style.top),
-      marcas: document.querySelectorAll('.margen-marca').length
-    }));
-    ok('en la portada los flotantes están ocultos, el tick arriba y hay 6 marcas', flotAntes.margen < 0.05 && flotAntes.wa < 0.05 && flotAntes.tick < 1 && flotAntes.marcas === 6, flotAntes);
+    const flotAntes = await page.evaluate(() => {
+      const wa = document.querySelector('.whatsapp-wrap').getBoundingClientRect();
+      const banner = document.querySelector('.cookie-banner').getBoundingClientRect();
+      const solapaConCookie = !(wa.right < banner.left || wa.left > banner.right || wa.bottom < banner.top || wa.top > banner.bottom);
+      return {
+        margen: parseFloat(getComputedStyle(document.querySelector('.margen')).opacity),
+        wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity),
+        tick: parseFloat(document.querySelector('.margen-tick').style.top),
+        marcas: document.querySelectorAll('.margen-marca').length,
+        solapaConCookie
+      };
+    });
+    ok('en la portada la regla de progreso está oculta y hay 6 marcas', flotAntes.margen < 0.05 && flotAntes.tick < 1 && flotAntes.marcas === 6, flotAntes);
+    ok('el WhatsApp es visible desde la carga, sin esperar a hacer scroll', flotAntes.wa > 0.95, flotAntes.wa);
+    ok('el aviso de cookies (abierto) no tapa el botón de WhatsApp', !flotAntes.solapaConCookie, flotAntes);
 
     /* ---------- 2. cookies ---------- */
     ok('el aviso de cookies aparece', await page.isVisible('.cookie-banner'));

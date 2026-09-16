@@ -345,7 +345,6 @@
   /* ---------- progreso de scroll: la regla de márgenes ---------- */
 
   var margen = document.querySelector(".margen");
-  var whatsapp = document.querySelector(".whatsapp-wrap");
 
   if (margen) {
     var tick = margen.querySelector(".margen-tick");
@@ -405,18 +404,19 @@
       onToggle: function (self) { margen.classList.toggle("margen--pie", self.isActive); }
     });
 
-    /* la regla y el WhatsApp aparecen al dejar atrás la portada */
-    var flotantes = [margen, whatsapp].filter(Boolean);
+    /* la regla de progreso aparece al dejar atrás la portada (antes no dice nada);
+       el WhatsApp es el contacto principal y va siempre visible, así que no se gatea aquí */
     if (reduce) {
-      gsap.set(flotantes, { opacity: 1, x: 0, y: 0 });
+      gsap.set(margen, { opacity: 1, x: 0 });
     } else {
-      var mostrarFlotantes = function (si) {
-        gsap.to(flotantes, { opacity: si ? 1 : 0, x: 0, y: si ? 0 : 12, duration: 0.5, ease: "power3.out", stagger: 0.08, overwrite: true });
+      gsap.set(margen, { opacity: 0, x: 8 });
+      var mostrarMargen = function (si) {
+        gsap.to(margen, { opacity: si ? 1 : 0, x: si ? 0 : 8, duration: 0.5, ease: "power3.out", overwrite: true });
       };
       ScrollTrigger.create({
         trigger: ".marquee", start: "top 92%",
-        onEnter: function () { mostrarFlotantes(true); },
-        onLeaveBack: function () { mostrarFlotantes(false); }
+        onEnter: function () { mostrarMargen(true); },
+        onLeaveBack: function () { mostrarMargen(false); }
       });
     }
   }
@@ -464,15 +464,27 @@
   /* ---------- cosas que funcionan con o sin GSAP ---------- */
 
   function iniciarBasico() {
-    /* cookies */
+    /* cookies: mientras el aviso está abierto, aparta el WhatsApp y la regla de progreso
+       hacia arriba lo que mida el aviso, para que no quede tapado por él (--cookie-h) */
     var banner = document.querySelector(".cookie-banner");
     var CLAVE = "dyf-cookie-ack";
     var visto = false;
     try { visto = localStorage.getItem(CLAVE) === "1"; } catch (e) { visto = false; }
-    if (banner && !visto) banner.hidden = false;
+
+    function ajustarOffsetCookie() {
+      var alto = (banner && !banner.hidden) ? banner.offsetHeight + 14 : 0;
+      document.documentElement.style.setProperty("--cookie-h", alto + "px");
+    }
+
+    if (banner && !visto) {
+      banner.hidden = false;
+      requestAnimationFrame(ajustarOffsetCookie);
+      window.addEventListener("resize", ajustarOffsetCookie);
+    }
     if (banner) {
       banner.querySelector(".cookie-ack").addEventListener("click", function () {
         banner.hidden = true;
+        ajustarOffsetCookie();
         try { localStorage.setItem(CLAVE, "1"); } catch (e) { /* modo privado */ }
       });
     }

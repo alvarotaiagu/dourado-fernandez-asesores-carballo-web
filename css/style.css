@@ -25,6 +25,7 @@
   --margen: clamp(1rem, 4vw, 4rem);
   --ancho: 1320px;
   --radio: 3px;
+  --cookie-h: 0px;   /* alto del aviso de cookies mientras está abierto; lo fija main.js */
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -422,10 +423,12 @@ figcaption { font-size: 0.74rem; color: var(--tinta-3); margin-top: 0.6rem; lett
 
 .margen {
   position: fixed; z-index: 40; right: clamp(0.6rem, 1.6vw, 1.6rem); width: 40px;
-  top: calc(var(--alto-top) + 2.5rem); bottom: calc(56px + 2.6rem);   /* deja sitio al WhatsApp */
+  top: calc(var(--alto-top) + 2.5rem); bottom: calc(56px + 2.6rem + var(--cookie-h));   /* deja sitio al WhatsApp y al aviso de cookies */
   opacity: 0; transform: translateX(8px); pointer-events: none;
 }
-.no-js .margen, .no-js .whatsapp-wrap { display: none; }
+/* la regla de progreso no tiene sentido sin JS; el WhatsApp es un enlace normal y sigue
+   funcionando sin JS, así que no se oculta */
+.no-js .margen { display: none; }
 .margen-linea { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--plata-oscura); }
 .margen-tick {
   position: absolute; left: 50%; top: 0; width: 11px; height: 2px; background: var(--oro);
@@ -457,7 +460,7 @@ figcaption { font-size: 0.74rem; color: var(--tinta-3); margin-top: 0.6rem; lett
 .margen--pie .margen-tick { box-shadow: 0 0 0 3px var(--verde-oscuro); }
 @media (max-width: 760px) {
   /* móvil: solo el punto en el margen, con algo de inercia */
-  .margen { width: 12px; right: 0.55rem; top: calc(var(--alto-top) + 1.5rem); bottom: calc(56px + 2rem); }
+  .margen { width: 12px; right: 0.55rem; top: calc(var(--alto-top) + 1.5rem); bottom: calc(56px + 2rem + var(--cookie-h)); }
   .margen-linea { background: color-mix(in srgb, var(--plata-oscura) 55%, transparent); }
   .margen-tick { width: 9px; height: 9px; border-radius: 50%; transform: translate(-50%, -50%); }
   .margen-marca { display: none; }
@@ -465,7 +468,10 @@ figcaption { font-size: 0.74rem; color: var(--tinta-3); margin-top: 0.6rem; lett
 
 /* ---------- WhatsApp flotante ---------- */
 
-.whatsapp-wrap { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 40; opacity: 0; transform: translateY(12px); }
+/* siempre visible desde la carga: es el canal de contacto principal, no un adorno que
+   dependa de haber hecho scroll. bottom sube cuando el aviso de cookies está abierto para
+   no quedar tapado por él (--cookie-h, ver main.js). */
+.whatsapp-wrap { position: fixed; right: 1.2rem; bottom: calc(1.2rem + var(--cookie-h)); z-index: 40; transition: bottom 0.3s ease; }
 .whatsapp {
   display: flex; align-items: center; flex-direction: row; height: 56px; border-radius: 999px;
   background: var(--verde); color: var(--crema);
@@ -517,7 +523,7 @@ html.lenis, html.lenis body { height: auto; }
   .gsap .regla-cifra, .gsap .libro-regla { transform: none; }
   .lc.cifra { color: var(--tinta); font-style: normal; }
   .hero-scroll span { animation: none; transform: none; }
-  .top, .btn, .top-nav a::after, .menu-btn span, .whatsapp-etiqueta, .margen-marca b, .margen-marca i, .margen-nombre { transition: none; }
+  .top, .btn, .top-nav a::after, .menu-btn span, .whatsapp-etiqueta, .margen-marca b, .margen-marca i, .margen-nombre, .whatsapp-wrap { transition: none; }
 }
 
 /* ---------- responsive ---------- */
@@ -565,7 +571,7 @@ html.lenis, html.lenis body { height: auto; }
   .pie-datos { grid-template-columns: 1fr; }
   .pie-copy { margin-left: 0; }
   .cookie-banner { left: 0.6rem; right: 0.6rem; bottom: 0.6rem; }
-  .whatsapp-wrap { right: 0.9rem; bottom: 0.9rem; }
+  .whatsapp-wrap { right: 0.9rem; bottom: calc(0.9rem + var(--cookie-h)); }
   .tarjeta-cab, .tarjeta-cuerpo { padding-left: 1.3rem; padding-right: 1.3rem; }
   .tarjeta-cab { margin-right: 1.3rem; }
 }
