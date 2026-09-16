@@ -1,7 +1,7 @@
 {
-  "fecha": "2026-09-16T12:09:59.698Z",
-  "url": "https://alvarotaiagu.github.io/dourado-fernandez-asesores-carballo-web/",
-  "total": 56,
+  "fecha": "2026-09-16T12:20:47.801Z",
+  "url": "http://127.0.0.1:8952/",
+  "total": 66,
   "fallos": 0,
   "resultados": [
     {
@@ -9,8 +9,8 @@
       "ok": true,
       "detalle": [
         {
-          "y": -38,
-          "rot": -1.4
+          "y": -27,
+          "rot": -1
         },
         {
           "y": 58,
@@ -163,11 +163,21 @@
       "detalle": {
         "todos": [
           {
-            "inicio": 7843,
-            "dur": 145
+            "inicio": 153,
+            "dur": 119
           }
         ],
-        "load": 8187
+        "load": 525
+      }
+    },
+    {
+      "prueba": "en la portada los flotantes están ocultos y el saldo a 0,00",
+      "ok": true,
+      "detalle": {
+        "prog": 0,
+        "wa": 0,
+        "regla": 0,
+        "saldo": "0,00"
       }
     },
     {
@@ -380,6 +390,78 @@
       }
     },
     {
+      "prueba": "al final del scroll la regla de oro llega al 100 %",
+      "ok": true,
+      "detalle": {
+        "prog": 1,
+        "wa": 1,
+        "regla": 1,
+        "marca": 1,
+        "saldo": "7.786,00",
+        "cuadra": true,
+        "check": 1,
+        "asiento": "Asiento 06",
+        "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+      }
+    },
+    {
+      "prueba": "el saldo del progreso cuadra en 7.786,00 con ✓",
+      "ok": true,
+      "detalle": {
+        "prog": 1,
+        "wa": 1,
+        "regla": 1,
+        "marca": 1,
+        "saldo": "7.786,00",
+        "cuadra": true,
+        "check": 1,
+        "asiento": "Asiento 06",
+        "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+      }
+    },
+    {
+      "prueba": "la ficha de progreso muestra el último asiento",
+      "ok": true,
+      "detalle": "Asiento 06"
+    },
+    {
+      "prueba": "la ficha de progreso y el WhatsApp son visibles fuera de la portada",
+      "ok": true,
+      "detalle": {
+        "prog": 1,
+        "wa": 1,
+        "regla": 1,
+        "marca": 1,
+        "saldo": "7.786,00",
+        "cuadra": true,
+        "check": 1,
+        "asiento": "Asiento 06",
+        "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+      }
+    },
+    {
+      "prueba": "el WhatsApp enlaza a wa.me con el teléfono del despacho",
+      "ok": true,
+      "detalle": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+    },
+    {
+      "prueba": "a mitad de página el saldo va por la mitad y aún no cuadra",
+      "ok": true,
+      "detalle": {
+        "saldo": 3966.14,
+        "cuadra": false,
+        "asiento": "Asiento 02"
+      }
+    },
+    {
+      "prueba": "la etiqueta del WhatsApp se despliega al pasar el ratón",
+      "ok": true,
+      "detalle": {
+        "anchoAntes": 56,
+        "anchoDespues": 243.9375
+      }
+    },
+    {
       "prueba": "reduced-motion: las columnas ya están cuadradas",
       "ok": true,
       "detalle": {
@@ -429,6 +511,15 @@
         "bloque": "1",
         "lenis": false,
         "wm": "1"
+      }
+    },
+    {
+      "prueba": "reduced-motion: el progreso sigue el scroll sin suavizado y el WhatsApp está visible",
+      "ok": true,
+      "detalle": {
+        "saldo": "7.786,00",
+        "regla": 1,
+        "wa": 1
       }
     },
     {
@@ -509,6 +600,15 @@
         "ancho": 368,
         "desborda": false,
         "recortes": 0
+      }
+    },
+    {
+      "prueba": "a 400px se oculta la ficha de progreso, queda la regla y el WhatsApp cabe en pantalla",
+      "ok": true,
+      "detalle": {
+        "fichaOculta": true,
+        "waVisible": true,
+        "regla": 0.5336
       }
     },
     {

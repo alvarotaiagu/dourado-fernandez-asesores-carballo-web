@@ -342,6 +342,78 @@
     if (candidata) candidata.classList.add("proximo");
   })();
 
+  /* ---------- progreso de scroll: el saldo que cuadra ---------- */
+
+  var progreso = document.querySelector(".progreso");
+  var topProgreso = document.querySelector(".top-progreso");
+  var whatsapp = document.querySelector(".whatsapp-wrap");
+  var progMarca = progreso && progreso.querySelector(".progreso-marca");
+  var progCifra = progreso && progreso.querySelector("[data-progreso-cifra]");
+  var progNum = progreso && progreso.querySelector("[data-progreso-num]");
+  var progNombre = progreso && progreso.querySelector("[data-progreso-nombre]");
+  var SALDO_FINAL = 7786;
+
+  if (progreso && topProgreso) {
+    var suave = { p: 0 };
+    var ultimaCifra = "";
+    var pintarProgreso = function () {
+      var p = suave.p;
+      gsap.set([topProgreso, progMarca], { scaleX: p });
+      var texto = formatear(SALDO_FINAL * p, 2);
+      if (texto !== ultimaCifra) { progCifra.textContent = texto; ultimaCifra = texto; }
+      progreso.classList.toggle("progreso--cuadra", p > 0.985);
+    };
+    var irProgreso = reduce
+      ? function (p) { suave.p = p; pintarProgreso(); }
+      : gsap.quickTo(suave, "p", { duration: 0.55, ease: "power3.out", onUpdate: pintarProgreso });
+
+    ScrollTrigger.create({
+      trigger: document.body, start: "top top", end: "bottom bottom",
+      onUpdate: function (self) { irProgreso(self.progress); }
+    });
+    pintarProgreso();
+
+    /* el asiento actual */
+    document.querySelectorAll("main .seccion").forEach(function (sec) {
+      var eyebrow = sec.querySelector(".eyebrow");
+      var h2 = sec.querySelector("h2");
+      if (!eyebrow || !h2) return;
+      var num = eyebrow.textContent.trim();
+      var nombre = h2.getAttribute("aria-label") || h2.textContent.trim();
+      ScrollTrigger.create({
+        trigger: sec, start: "top 50%", end: "bottom 50%",
+        onToggle: function (self) {
+          if (!self.isActive || progNum.textContent === num) return;
+          if (reduce) { progNum.textContent = num; progNombre.textContent = nombre; return; }
+          gsap.to([progNum, progNombre], {
+            opacity: 0, y: -4, duration: 0.18, ease: "power2.in", overwrite: true,
+            onComplete: function () {
+              progNum.textContent = num; progNombre.textContent = nombre;
+              gsap.fromTo([progNum, progNombre], { opacity: 0, y: 5 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" });
+            }
+          });
+        }
+      });
+    });
+
+    /* la ficha y el WhatsApp aparecen al dejar atrás la portada */
+    var flotantes = [progreso, whatsapp].filter(Boolean);
+    if (reduce) {
+      gsap.set(flotantes, { opacity: 1, y: 0 });
+    } else {
+      /* solo importa cruzar el inicio hacia abajo (aparecen) o hacia arriba (se van):
+         con onToggle se irían también al llegar al final de la página (progress 1) */
+      var mostrarFlotantes = function (si) {
+        gsap.to(flotantes, { opacity: si ? 1 : 0, y: si ? 0 : 12, duration: 0.5, ease: "power3.out", stagger: 0.08, overwrite: true });
+      };
+      ScrollTrigger.create({
+        trigger: ".marquee", start: "top 92%",
+        onEnter: function () { mostrarFlotantes(true); },
+        onLeaveBack: function () { mostrarFlotantes(false); }
+      });
+    }
+  }
+
   /* ---------- marquee ---------- */
 
   var pista = document.querySelector(".marquee-pista");

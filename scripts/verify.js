@@ -92,6 +92,15 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
 
     await page.screenshot({ path: path.join(CAPS, 'hero-1440.png') });
 
+    /* en la portada, la ficha de progreso y el WhatsApp aún no se ven y el saldo está a 0 */
+    const flotAntes = await page.evaluate(() => ({
+      prog: parseFloat(getComputedStyle(document.querySelector('.progreso')).opacity),
+      wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity),
+      regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a,
+      saldo: document.querySelector('[data-progreso-cifra]').textContent.trim()
+    }));
+    ok('en la portada los flotantes están ocultos y el saldo a 0,00', flotAntes.prog < 0.05 && flotAntes.wa < 0.05 && flotAntes.regla < 0.02 && flotAntes.saldo === '0,00', flotAntes);
+
     /* ---------- 2. cookies ---------- */
     ok('el aviso de cookies aparece', await page.isVisible('.cookie-banner'));
     await page.click('.cookie-ack');
@@ -210,6 +219,43 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
       claro: document.querySelector('.top').classList.contains('top--claro')
     }));
     ok('la cabecera pasa a tinta clara solo cuando el pie verde queda debajo', pie.claro === pie.solapa, pie);
+
+    /* ---------- 7b. progreso de scroll y WhatsApp ---------- */
+    await page.waitForTimeout(700);
+    const flotFin = await page.evaluate(() => ({
+      prog: parseFloat(getComputedStyle(document.querySelector('.progreso')).opacity),
+      wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity),
+      regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a,
+      marca: new DOMMatrix(getComputedStyle(document.querySelector('.progreso-marca')).transform).a,
+      saldo: document.querySelector('[data-progreso-cifra]').textContent.trim(),
+      cuadra: document.querySelector('.progreso').classList.contains('progreso--cuadra'),
+      check: parseFloat(getComputedStyle(document.querySelector('.progreso-check')).opacity),
+      asiento: document.querySelector('[data-progreso-num]').textContent.trim(),
+      href: document.querySelector('.whatsapp').href
+    }));
+    ok('al final del scroll la regla de oro llega al 100 %', flotFin.regla > 0.99 && flotFin.marca > 0.99, flotFin);
+    ok('el saldo del progreso cuadra en 7.786,00 con ✓', flotFin.saldo === '7.786,00' && flotFin.cuadra && flotFin.check > 0.95, flotFin);
+    ok('la ficha de progreso muestra el último asiento', flotFin.asiento === 'Asiento 06', flotFin.asiento);
+    ok('la ficha de progreso y el WhatsApp son visibles fuera de la portada', flotFin.prog > 0.95 && flotFin.wa > 0.95, flotFin);
+    ok('el WhatsApp enlaza a wa.me con el teléfono del despacho', flotFin.href.startsWith('https://wa.me/34981702760'), flotFin.href);
+
+    /* a mitad de página el saldo va por la mitad y el asiento es intermedio */
+    await page.evaluate(() => window.scrollTo(0, (document.body.scrollHeight - innerHeight) * 0.5));
+    await page.waitForTimeout(900);
+    const flotMitad = await page.evaluate(() => ({
+      saldo: parseFloat(document.querySelector('[data-progreso-cifra]').textContent.replace('.', '').replace(',', '.')),
+      cuadra: document.querySelector('.progreso').classList.contains('progreso--cuadra'),
+      asiento: document.querySelector('[data-progreso-num]').textContent.trim()
+    }));
+    ok('a mitad de página el saldo va por la mitad y aún no cuadra', flotMitad.saldo > 3500 && flotMitad.saldo < 4300 && !flotMitad.cuadra && flotMitad.asiento !== 'Asiento 01' && flotMitad.asiento !== 'Asiento 06', flotMitad);
+
+    /* la etiqueta del WhatsApp se despliega al pasar el ratón */
+    const anchoAntes = await page.evaluate(() => document.querySelector('.whatsapp').getBoundingClientRect().width);
+    await page.hover('.whatsapp');
+    await page.waitForTimeout(700);
+    const anchoDespues = await page.evaluate(() => document.querySelector('.whatsapp').getBoundingClientRect().width);
+    ok('la etiqueta del WhatsApp se despliega al pasar el ratón', anchoDespues > anchoAntes + 80, { anchoAntes, anchoDespues });
+    await page.screenshot({ path: path.join(CAPS, 'progreso-1440.png') });
     await page.screenshot({ path: path.join(CAPS, 'pie-1440.png') });
 
     await page.close();
@@ -239,6 +285,14 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     ok('reduced-motion: cifras, total y sello ya resueltos', estado.cifras && estado.total === '7.786,00' && parseFloat(estado.sello) > 0.95, estado);
     ok('reduced-motion: los bloques ya son visibles', parseFloat(estado.bloque) > 0.95 && parseFloat(estado.wm) > 0.95, estado);
     ok('reduced-motion: sin smooth scroll (Lenis)', estado.lenis === false, estado);
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    const rmProg = await page.evaluate(() => ({
+      saldo: document.querySelector('[data-progreso-cifra]').textContent.trim(),
+      regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a,
+      wa: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity)
+    }));
+    ok('reduced-motion: el progreso sigue el scroll sin suavizado y el WhatsApp está visible', rmProg.saldo === '7.786,00' && rmProg.regla > 0.99 && rmProg.wa > 0.95, rmProg);
     ok('reduced-motion sin errores JS', page.errores.length === 0, page.errores);
     await page.screenshot({ path: path.join(CAPS, 'reduced-motion.png') });
     await page.close();
@@ -276,6 +330,17 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
       });
       ok('a 400px el hero apila texto y libro en una columna', libro.apiladas, libro);
       ok('a 400px el libro cabe sin recortar cifras', !libro.desborda && libro.recortes === 0, libro);
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
+      await page.waitForTimeout(900);
+      const flotMovil = await page.evaluate(() => {
+        const wa = document.querySelector('.whatsapp').getBoundingClientRect();
+        return {
+          fichaOculta: getComputedStyle(document.querySelector('.progreso')).display === 'none',
+          waVisible: parseFloat(getComputedStyle(document.querySelector('.whatsapp-wrap')).opacity) > 0.95 && wa.right <= innerWidth && wa.bottom <= innerHeight,
+          regla: new DOMMatrix(getComputedStyle(document.querySelector('.top-progreso')).transform).a
+        };
+      });
+      ok('a 400px se oculta la ficha de progreso, queda la regla y el WhatsApp cabe en pantalla', flotMovil.fichaOculta && flotMovil.waVisible && flotMovil.regla > 0.3, flotMovil);
       await page.screenshot({ path: path.join(CAPS, 'hero-400.png') });
     }
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));

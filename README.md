@@ -23,6 +23,10 @@ Sitio estático sin build: `index.html` + `css/style.css` + `js/main.js`. GSAP 3
 8. **Asiento 06 — Contacto.** Ficha en renglones: teléfono grande, dirección, horario en tres líneas, email pendiente, Facebook, y el mapa de Google por consentimiento.
 9. **Pie** en verde botella, el «cierre del balance»: wordmark claro (D oro, &F plata), datos, `Saldo: 0,00 ✓`, diálogos legales.
 
+**Progreso de scroll — el saldo que cuadra.** Dos piezas fijas, ambas escondidas en la portada y visibles al cruzar el marquee: una **regla de oro** que avanza bajo la cabecera (`.top-progreso`, `scaleX` = progreso) y una **ficha** abajo a la izquierda (`.progreso`) con el asiento actual (`Asiento 03 · Calendario fiscal`, cambia con un fundido al cruzar cada sección), una regla con marca y una cifra en serif que cuenta de **0,00 a 7.786,00** con el scroll (suavizada con `quickTo`, 0,55 s) y cierra con **✓ Cuadra** al llegar al final. En móvil (≤760 px) solo queda la regla. Con reduced-motion sigue el scroll sin suavizado.
+
+**WhatsApp flotante** abajo a la derecha (`.whatsapp`): píldora verde botella con el glifo en crema, magnética, cuya etiqueta «Escríbenos por WhatsApp» se despliega al pasar el ratón o al enfocar con teclado. Enlaza a `wa.me/34981702760` con un mensaje prellenado. **El número es el fijo del despacho y no está confirmado que tenga WhatsApp**: la ficha de contacto lo marca con `[CONFIRMAR NÚMERO DE WHATSAPP]`; si es otro número, cambiar el `href` en dos sitios de `index.html` (botón flotante y ficha).
+
 Los bloques con clase `.cuadrar` entran desplazados (28 px) y girados 0,9° hacia un lado (`data-lado`) y se corrigen con `power3.out` en 0,85 s. Reglas finas horizontales separan todo como renglones; los totales llevan doble regla.
 
 ## Datos reales usados (facilitados por el cliente, publicados tal cual)
@@ -41,6 +45,7 @@ Los bloques con clase `.cuadrar` entran desplazados (28 px) y girados 0,9° haci
 - **[AÑOS DE ACTIVIDAD PENDIENTE]**, **[EMAIL PENDIENTE]**, **[PRECIO PENDIENTE]** (no se publica ninguna tarifa).
 - **[NOMBRE ASESOR/A PENDIENTE]** ×2, **[CARGO PENDIENTE]** ×2, **[BIO PENDIENTE]** ×2, **[FOTO PENDIENTE]** ×2, **[EQUIPO PENDIENTE]** — se muestran dos huecos por los dos apellidos del nombre comercial; el número real de personas está por confirmar.
 - **[TEXTO DE RESEÑA PENDIENTE]** ×3 y **[NOMBRE PENDIENTE]** ×3 — no se transcribe ninguna reseña hasta recibir capturas o el enlace. La nota y el número sí son reales.
+- **[CONFIRMAR NÚMERO DE WHATSAPP]** — el botón flotante usa el fijo 981 70 27 60.
 - **[NIF PENDIENTE]**, **[DATOS REGISTRALES PENDIENTES]**, **[POLÍTICA COMPLETA PENDIENTE]**.
 - **[LOGO PROVISIONAL]** — ver abajo.
 - **Botón «Sitio web» de la ficha de Google**: no se facilitó la URL, así que no se ha consultado ni se enlaza. Si existe una web activa, conviene revisarla solo como fuente de datos.
@@ -86,6 +91,6 @@ python -m http.server 8952
 NODE_PATH=<node_modules con playwright> node scripts/verify.js
 ```
 
-`scripts/verify.js` (56 pruebas, informe en `scripts/verify-report.json`, capturas en `screenshots/`): columnas descuadradas a mitad de intro y alineadas al final, cifras resueltas, totales 7.786,00, regla y sello; degradados oro/plata en las letras del wordmark; cookies (aparece, cierra de verdad, se recuerda); longtasks; todos los `.cuadrar` a 0°; sticky stack (índice, regla, tarjeta activa visible y encima, tarjetas tapadas encogidas, renglón cambiando); contadores de balance, calendario y reseñas; fila «próximo»; mapa solo al pulsar y sin API key; diálogos; reduced-motion; sin JS; sin scroll horizontal a 1440/1024/768/400/360; menú móvil.
+`scripts/verify.js` (66 pruebas, informe en `scripts/verify-report.json`, capturas en `screenshots/`): columnas descuadradas a mitad de intro y alineadas al final, cifras resueltas, totales 7.786,00, regla y sello; degradados oro/plata en las letras del wordmark; cookies (aparece, cierra de verdad, se recuerda); longtasks; todos los `.cuadrar` a 0°; sticky stack (índice, regla, tarjeta activa visible y encima, tarjetas tapadas encogidas, renglón cambiando); contadores de balance, calendario y reseñas; fila «próximo»; mapa solo al pulsar y sin API key; diálogos; reduced-motion; sin JS; sin scroll horizontal a 1440/1024/768/400/360; menú móvil; progreso de scroll (oculto en portada, saldo a mitad y 7.786,00 ✓ al final, asiento actual, regla al 100 %) y WhatsApp (enlace, etiqueta desplegable, cabe en pantalla a 400 px).
 
 Dos bugs reales los cazó esta verificación antes de darla por buena: la **D, & y F del hero no se pintaban** (el degradado `background-clip: text` del contenedor no llega a los spans transformados del char-reveal; ahora va en cada letra) y la **tarjeta 03 del stack quedaba invisible** (un scrub sobre la opacidad arrancaba en 0 y pisaba la animación de entrada; el scrub ahora solo escala).
