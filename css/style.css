@@ -403,6 +403,22 @@ figcaption { font-size: 0.74rem; color: var(--tinta-3); margin-top: 0.6rem; lett
 .equipo-lista { display: grid; grid-template-columns: repeat(2, minmax(0, 380px)); gap: clamp(2rem, 5vw, 5rem); }
 .persona-foto { margin: 0 0 1.2rem; }
 .persona-foto img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; border-radius: var(--radio); }
+/* Hueco de retrato: marco vacio con la inicial del rotulo. Antes habia dos
+   fotos de archivo y eran dos desconocidos justo donde van las caras de los
+   socios; un hueco honesto se lee mejor que una cara que no es la suya. */
+.persona-hueco {
+  display: grid; place-items: center;
+  aspect-ratio: 4 / 5; width: 100%;
+  border: 1px dashed var(--plata-oscura);
+  border-radius: var(--radio);
+  background:
+    repeating-linear-gradient(var(--renglon) 0 1px, transparent 1px 28px),
+    var(--crema-2);
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(3.5rem, 7vw, 5.5rem); line-height: 1;
+  color: var(--plata-oscura);
+}
+.persona[data-lado="izq"] .persona-hueco { color: var(--oro); }
 .persona-nombre { font-size: 1.5rem; margin: 0 0 0.3rem; font-weight: 500; }
 .persona-cargo { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tinta-3); margin-bottom: 0.9rem; }
 .persona-bio { color: var(--tinta-2); font-size: 0.95rem; border-top: 1px solid var(--plata); padding-top: 0.9rem; }
