@@ -51,6 +51,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css?v=3">
+<!-- Sin JavaScript no hay quien separe las columnas: mejor no ensenarla. -->
+<noscript><style>.cortina { display: none !important; }</style></noscript>
 <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -61,6 +63,20 @@
 </div>
 
 <a class="skip" href="#contenido">Saltar al contenido</a>
+
+<!-- Cortina de entrada: el asiento cuadra y las dos columnas se separan.
+     Se retira SIEMPRE desde js/main.js; el script de abajo es la red de
+     seguridad por si main.js no llega a cargarse. -->
+<div class="cortina" data-cortina aria-hidden="true">
+  <span class="cortina-col cortina-col--debe"></span>
+  <span class="cortina-col cortina-col--haber"></span>
+  <div class="cortina-centro">
+    <p class="cortina-marca"><span>Dourado &amp; Fern&aacute;ndez</span></p>
+    <span class="cortina-raya" aria-hidden="true"></span>
+    <p class="cortina-pie">Asesor&iacute;a &middot; Carballo</p>
+  </div>
+</div>
+<script>setTimeout(function(){var c=document.querySelector('[data-cortina]');if(c&&!c.hidden){c.hidden=true;document.documentElement.classList.remove('cortina-puesta','cortina-anima');}},6000);</script>
 
 <header class="top">
   <a class="top-marca" href="#inicio" aria-label="Dourado y Fernández Asesores, inicio">

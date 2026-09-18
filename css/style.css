@@ -146,6 +146,51 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .link-btn { text-decoration: underline; text-underline-offset: 0.2em; }
 .magnetico { will-change: transform; }
 
+/* ---------- Cortina de entrada (preloader) ----------
+   El idioma de la casa es el libro mayor. Aqui la raya de totales se traza
+   bajo el nombre y despues LAS DOS COLUMNAS SE SEPARAN EN VERTICAL: el
+   debe sube y el haber baja. Ningun otro sitio de la carpeta sale asi, y
+   aqui significa algo: las dos mitades del asiento abriendose.
+   A proposito no cuadra ninguna cifra: eso ya lo hace el libro del hero
+   (columnas descuadradas que se colocan y numeros que se resuelven) y
+   repetirlo le restaria.
+   El color va en las columnas, no en .cortina: si lo llevara el
+   contenedor, al separarse se veria el panel y no la pagina.
+   Ojo: .cortina usa display:grid, asi que [hidden] necesita su regla. */
+.cortina { position: fixed; inset: 0; z-index: 400; display: grid; place-items: center; overflow: hidden; }
+.cortina[hidden] { display: none; }
+html.cortina-puesta { overflow: hidden; }
+
+.cortina-col {
+  position: absolute; top: -1px; bottom: -1px; width: 50.5%;
+  background: linear-gradient(180deg, var(--verde) 0%, var(--verde-oscuro) 62%, #1A2C25 100%);
+  will-change: transform;
+}
+.cortina-col--debe { left: 0; box-shadow: inset -1px 0 0 rgba(184,148,79,.28); }
+.cortina-col--haber { right: 0; }
+
+.cortina-centro { position: relative; display: grid; justify-items: center; gap: .85rem; padding: 0 1.5rem; text-align: center; }
+.cortina-marca { overflow: hidden; padding-bottom: .12em; }
+.cortina-marca span {
+  display: block; font-family: var(--serif); font-weight: 400;
+  font-size: clamp(1.9rem, 6vw, 3.4rem); line-height: 1.05; color: var(--crema);
+}
+/* la raya de totales: doble, como la que se traza bajo la suma */
+.cortina-raya {
+  display: block; width: min(46vw, 280px); height: 4px;
+  border-top: 1px solid var(--oro-claro);
+  border-bottom: 1px solid var(--oro-claro);
+  transform-origin: 50% 50%;
+}
+.cortina-pie { font-family: var(--sans); font-size: .68rem; font-weight: 600; letter-spacing: .32em; text-transform: uppercase; color: rgba(245,241,230,.55); }
+
+html.cortina-anima .cortina-marca span { transform: translateY(112%); }
+html.cortina-anima .cortina-raya { transform: scaleX(0); }
+html.cortina-anima .cortina-pie { opacity: 0; letter-spacing: .58em; }
+
+/* con movimiento reducido no debe verse ni un fotograma */
+@media (prefers-reduced-motion: reduce) { .cortina { display: none; } }
+
 /* ---------- cabecera ---------- */
 
 .top {

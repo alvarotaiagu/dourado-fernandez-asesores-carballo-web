@@ -11,6 +11,75 @@
   var doc = document.documentElement;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+
+  /* ---------- Cortina de entrada (preloader) ----------
+     Gesto propio: se traza la raya de totales bajo el nombre y despues LAS
+     DOS COLUMNAS SE SEPARAN EN VERTICAL, el debe hacia arriba y el haber
+     hacia abajo. No cuadra ninguna cifra a proposito: eso ya lo hace el
+     libro del hero.
+
+     Dos momentos distintos:
+       · alAbrirse(fn) → cuando las columnas EMPIEZAN a separarse, para que
+         el libro del hero ya se este cuadrando cuando asoma la pagina.
+       · retirar()     → al terminar: quita el nodo, devuelve el scroll y
+         refresca ScrollTrigger, que midio con overflow:hidden.
+
+     Va por encima del `return` de "sin GSAP" que hay justo debajo: si no,
+     con el CDN caido la cortina se quedaria puesta tapando el sitio. Y
+     `lenis` se declara con var, asi que leerlo aqui arriba es seguro
+     (vale undefined hasta que se crea, que es falsy). */
+  var cortina = (function initCortina() {
+    var el = document.querySelector("[data-cortina]");
+    var espera = [];
+    var abierta = false;
+    var fuera = false;
+    var hayGsap = !!(window.gsap && window.ScrollTrigger);
+
+    function abrir() {
+      if (abierta) return;
+      abierta = true;
+      espera.splice(0).forEach(function (fn) { try { fn(); } catch (e) {} });
+    }
+    function retirar() {
+      abrir();
+      if (fuera) return;
+      fuera = true;
+      if (el) el.hidden = true;
+      doc.classList.remove("cortina-puesta", "cortina-anima");
+      if (lenis) lenis.start();
+      if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+    }
+
+    var api = { alAbrirse: function (fn) { return abierta ? fn() : espera.push(fn); } };
+    if (!el || reduce || !hayGsap) { retirar(); return api; }
+
+    doc.classList.add("cortina-puesta", "cortina-anima");
+
+    var centro = el.querySelector(".cortina-centro");
+    var marca = el.querySelector(".cortina-marca span");
+    var raya = el.querySelector(".cortina-raya");
+    var pie = el.querySelector(".cortina-pie");
+    var debe = el.querySelector(".cortina-col--debe");
+    var haber = el.querySelector(".cortina-col--haber");
+    var ABRE = 1.3;
+
+    var tl = gsap.timeline({ onComplete: retirar });
+    /* el estado inicial es un translateY(112%) del CSS y GSAP lo lee de la
+       matriz como pixeles, no como yPercent: hay que poner las dos a cero
+       o el nombre no sale nunca de su mascara. */
+    if (marca) tl.to(marca, { y: 0, yPercent: 0, duration: 0.9, ease: "expo.out" }, 0.15);
+    if (raya) tl.to(raya, { scaleX: 1, duration: 0.75, ease: "power2.inOut" }, 0.55);
+    if (pie) tl.to(pie, { opacity: 1, letterSpacing: "0.32em", duration: 0.8, ease: "power2.out" }, 0.62);
+
+    tl.add(abrir, ABRE);
+    if (centro) tl.to(centro, { opacity: 0, duration: 0.32, ease: "power2.in" }, ABRE);
+    if (debe) tl.to(debe, { yPercent: -101, duration: 1.0, ease: "expo.inOut" }, ABRE + 0.06);
+    if (haber) tl.to(haber, { yPercent: 101, duration: 1.0, ease: "expo.inOut" }, ABRE);
+
+    setTimeout(retirar, 5200);
+    return api;
+  })();
+
   /* Si GSAP no llega (CDN bloqueado), la página se queda estática y legible:
      nada se oculta porque la clase .gsap nunca se añade. */
   if (!window.gsap || !window.ScrollTrigger) {
@@ -168,7 +237,10 @@
       });
     }
 
-    var tl = gsap.timeline({ delay: 0.2 });
+    var tl = gsap.timeline({ delay: 0.2, paused: true });
+    /* el libro no empieza a cuadrar hasta que se separan las columnas de la
+       cortina: lo primero que se ve de la pagina ya esta en movimiento */
+    cortina.alAbrirse(function () { tl.play(); });
     // 1. el wordmark entra
     tl.to(heroChars, { yPercent: 0, opacity: 1, duration: 0.9, ease: "power4.out", stagger: 0.03 }, 0)
       .to(heroResto, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out", stagger: 0.08 }, 0.35)
