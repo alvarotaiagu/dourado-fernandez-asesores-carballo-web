@@ -561,6 +561,39 @@
       });
     }
 
+    /* ---------------- El control de paleta ----------------
+       NO ES PARTE DEL SITIO. Es un mando para enseñar la misma web en tres
+       paletas de color delante del cliente mientras decide. Al entregar la
+       web ya como oficial se borra esta función, el bloque .paleta del CSS,
+       el <div id="paleta"> y la bandera del <head>. */
+    (function initPaleta() {
+      var caja = document.getElementById("paleta");
+      var botones = {
+        rojo: document.getElementById("paleta-rojo"),
+        azul: document.getElementById("paleta-azul"),
+        verde: document.getElementById("paleta-verde")
+      };
+      if (!caja || !botones.rojo || !botones.azul || !botones.verde) return;
+      var CLAVE_PALETA = "dyf-paleta";
+
+      caja.hidden = false; // sin JS no se enseña: no haría nada
+
+      function pintar(nombre, guardar) {
+        doc.classList.remove("paleta-azul", "paleta-verde");
+        if (nombre !== "rojo") doc.classList.add("paleta-" + nombre);
+        Object.keys(botones).forEach(function (k) {
+          botones[k].setAttribute("aria-pressed", String(k === nombre));
+        });
+        if (guardar) { try { localStorage.setItem(CLAVE_PALETA, nombre); } catch (e) {} }
+      }
+
+      var actual = doc.classList.contains("paleta-azul") ? "azul" : doc.classList.contains("paleta-verde") ? "verde" : "rojo";
+      pintar(actual, false);
+      botones.rojo.addEventListener("click", function () { pintar("rojo", true); });
+      botones.azul.addEventListener("click", function () { pintar("azul", true); });
+      botones.verde.addEventListener("click", function () { pintar("verde", true); });
+    })();
+
     /* año del pie */
     var anio = document.querySelector("[data-anio]");
     if (anio) anio.textContent = String(new Date().getFullYear());

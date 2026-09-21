@@ -1,7 +1,7 @@
 {
-  "fecha": "2026-09-21T12:14:49.701Z",
-  "url": "http://127.0.0.1:8954/",
-  "total": 67,
+  "fecha": "2026-09-21T12:26:26.129Z",
+  "url": "http://127.0.0.1:8955/",
+  "total": 69,
   "fallos": 0,
   "resultados": [
     {
@@ -151,15 +151,11 @@
       "detalle": {
         "todos": [
           {
-            "inicio": 192,
-            "dur": 132
-          },
-          {
-            "inicio": 503,
-            "dur": 71
+            "inicio": 138,
+            "dur": 124
           }
         ],
-        "load": 574
+        "load": 449
       }
     },
     {
@@ -466,6 +462,21 @@
         "anchoAntes": 56,
         "anchoDespues": 243.9375
       }
+    },
+    {
+      "prueba": "el control de paleta cambia --oro en vivo al pulsar Azul",
+      "ok": true,
+      "detalle": {
+        "clase": true,
+        "oro": "rgb(29, 90, 130)",
+        "pressed": "true",
+        "guardado": "azul"
+      }
+    },
+    {
+      "prueba": "la paleta elegida se recuerda y se resuelve antes de pintar (sin salto)",
+      "ok": true,
+      "detalle": true
     },
     {
       "prueba": "reduced-motion: las columnas ya están cuadradas",

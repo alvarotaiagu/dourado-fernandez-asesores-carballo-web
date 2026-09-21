@@ -10,8 +10,21 @@ Sitio estático sin build: `index.html` + `css/style.css` + `js/main.js`. GSAP 3
 
 ## Paleta y tipografía
 
-- **Rojo de marca** `#7E1E22` / oscuro `#5C1114` (estructural, tomado de la tarjeta real: tinta de la "D&F" y del fondo del anverso), **crema papel** `#F5F1E6` (base), **gris cálido** `#D9D2C2` / `#A69C88` (separadores, texto secundario). Para el rojo **como texto** sobre crema se usa `#7A1418` (`--oro-tinta`, ~9,6:1). Nada de azul ni gris de banco. Hasta el 2026-09-21 la paleta era verde botella/oro/plata (recreación provisional); se sustituyó entera al ver la tarjeta del cliente — los nombres de variable CSS (`--verde`, `--oro`, `--plata`...) se conservaron para no tocar cientos de usos, solo cambiaron los valores.
+- **Rojo de marca** `#7E1E22` / oscuro `#5C1114` (estructural, tomado de la tarjeta real: tinta de la "D&F" y del fondo del anverso), **blanco puro** `#FFFFFF` (base, pedido expresamente el 2026-09-21 en vez del crema original), **gris cálido** `#D9D2C2` / `#A69C88` (separadores, texto secundario). Para el rojo **como texto** sobre blanco se usa `#7A1418` (`--oro-tinta`, ~10,4:1). Nada de azul ni gris de banco. Hasta el 2026-09-21 la paleta era verde botella/oro/plata (recreación provisional); se sustituyó entera al ver la tarjeta del cliente — los nombres de variable CSS (`--verde`, `--oro`, `--plata`, `--crema`...) se conservaron para no tocar cientos de usos, solo cambiaron los valores.
 - **Fraunces** (opsz 144, SOFT 0, WONK 0) para wordmark, titulares y cifras; **Inter** para cuerpo. Las cifras clave van en serif, grandes, con `font-variant-numeric: tabular-nums` y una **regla fina debajo** que se dibuja al entrar (`.regla-cifra`, `scaleX 0 → 1`).
+
+## El control de paleta (demostración, quitar antes de dar la web por oficial)
+
+**Solo para mientras el cliente decide el color** — mando abajo a la izquierda (`#paleta`) que cambia en vivo entre tres paletas: **Rojo** (la real, marcada por defecto), **Azul** y **Verde**, dos alternativas derivadas conservando el mismo contraste (~7:1 en botones, ~10:1 en texto sobre blanco). Solo cambia el color de marca (`--verde`, `--salvia`, `--oro` y derivados, redefinidos bajo `html.paleta-azul`/`html.paleta-verde`); la tinta, el papel y **el logo real no cambian de color** con el mando — es deliberado, el logo es el elemento fijo de la identidad. La elección se recuerda en `localStorage` (`dyf-paleta`) y se resuelve en un script bloqueante del `<head>`, antes de pintar, para que la página no arranque en una paleta y salte a otra. Comprobado por script en `scripts/verify.js`.
+
+### Cómo quitarlo al dar la web por oficial
+
+**Esto hay que hacerlo siempre** (mismo criterio que cualquier otro control de demostración de la carpeta). Se borran cuatro cosas:
+
+1. `index.html`: el bloque `<div class="paleta" id="paleta">` (marcado con comentario) y, en el `<script>` del `<head>`, el `try` que lee `dyf-paleta`.
+2. `js/main.js`: la función `initPaleta()`.
+3. `css/style.css`: el bloque «Control de paleta» (las reglas `.paleta*` y las dos clases `html.paleta-azul`/`html.paleta-verde`).
+4. Confirmar con el cliente cuál de las tres paletas se queda como definitiva antes de borrar las otras dos.
 
 ## Estructura (propia)
 

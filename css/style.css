@@ -29,6 +29,20 @@
   --cookie-h: 0px;   /* alto del aviso de cookies mientras está abierto; lo fija main.js */
 }
 
+/* -------------------------- Control de paleta --------------------------
+   BLOQUE DE DEMOSTRACIÓN: se borra entero al entregar la web ya como
+   oficial (ver README, "El control de paleta"). Solo cambia el color de
+   marca (verde/salvia/oro y derivados) — la tinta y el papel son los
+   mismos en las tres, y el logo real no cambia de color con el mando. */
+html.paleta-azul {
+  --verde: #0F2A3D; --verde-oscuro: #081B29; --salvia: #3E6E8E;
+  --oro: #1D5A82; --oro-claro: #2E7BA8; --oro-tinta: #10425F;
+}
+html.paleta-verde {
+  --verde: #0F3D2E; --verde-oscuro: #0A2A20; --salvia: #3E8E6E;
+  --oro: #17663F; --oro-claro: #2EA36E; --oro-tinta: #0F4A2C;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: auto; -webkit-text-size-adjust: 100%; }
 body {
@@ -537,6 +551,31 @@ figcaption { font-size: 0.74rem; color: var(--tinta-3); margin-top: 0.6rem; lett
 }
 .whatsapp:hover { background: var(--verde-oscuro); }
 .whatsapp svg { width: 56px; height: 56px; padding: 15px; flex-shrink: 0; display: block; }
+
+/* ---------- Control de paleta (demostración, ver nota arriba en :root) ---------- */
+.paleta { display: none; }
+.paleta:not([hidden]) {
+  display: flex; position: fixed; z-index: 40; left: 1.2rem; bottom: calc(1.2rem + var(--cookie-h));
+  align-items: center; gap: 0.6rem; background: var(--papel-claro); border: 1px solid var(--plata);
+  border-radius: 999px; padding: 0.4rem 0.5rem 0.4rem 0.9rem;
+  box-shadow: 0 16px 32px -18px color-mix(in srgb, var(--tinta) 45%, transparent);
+  transition: bottom 0.3s ease;
+}
+.paleta-rotulo {
+  margin: 0; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tinta-3);
+}
+.paleta-botones { display: flex; gap: 0.3rem; }
+.paleta-botones button {
+  font-size: 0.68rem; letter-spacing: 0.04em; cursor: pointer; background: transparent; color: var(--tinta-3);
+  border: 1px solid var(--plata); border-radius: 999px; padding: 0.34rem 0.75rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.paleta-botones button:hover { color: var(--tinta); border-color: var(--plata-oscura); }
+.paleta-botones button[aria-pressed="true"] { background: var(--oro); color: var(--crema); border-color: var(--oro); }
+@media (max-width: 480px) {
+  .paleta:not([hidden]) { left: 0.9rem; bottom: calc(0.9rem + var(--cookie-h)); padding: 0.3rem 0.4rem 0.3rem 0.7rem; }
+  .paleta-rotulo { display: none; }
+}
 .whatsapp-etiqueta {
   max-width: 0; overflow: hidden; white-space: nowrap; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.01em;
   padding-left: 0; transition: max-width 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), padding-left 0.45s;

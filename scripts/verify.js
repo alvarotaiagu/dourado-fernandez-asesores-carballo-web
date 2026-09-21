@@ -267,6 +267,23 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     await page.screenshot({ path: path.join(CAPS, 'regla-1440.png') });
     await page.screenshot({ path: path.join(CAPS, 'pie-1440.png') });
 
+    /* control de paleta (demostración): cambia de paleta en vivo y se recuerda */
+    await page.click('#paleta-azul');
+    await page.waitForTimeout(300);
+    const paleta1 = await page.evaluate(() => ({
+      clase: document.documentElement.classList.contains('paleta-azul'),
+      oro: getComputedStyle(document.querySelector('.btn-oro')).backgroundColor,
+      pressed: document.getElementById('paleta-azul').getAttribute('aria-pressed'),
+      guardado: localStorage.getItem('dyf-paleta')
+    }));
+    ok('el control de paleta cambia --oro en vivo al pulsar Azul', paleta1.clase && paleta1.oro === 'rgb(29, 90, 130)' && paleta1.pressed === 'true' && paleta1.guardado === 'azul', paleta1);
+    await page.reload({ waitUntil: 'load' });
+    await page.waitForTimeout(300);
+    const paleta2 = await page.evaluate(() => document.documentElement.classList.contains('paleta-azul'));
+    ok('la paleta elegida se recuerda y se resuelve antes de pintar (sin salto)', paleta2, paleta2);
+    await page.click('#paleta-rojo');
+    await page.waitForTimeout(300);
+
     await page.close();
   }
 
