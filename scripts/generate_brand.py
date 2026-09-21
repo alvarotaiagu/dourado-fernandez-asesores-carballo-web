@@ -36,7 +36,7 @@ FONT_PATH = os.path.join(FONT_DIR, "Fraunces[SOFT,WONK,opsz,wght].ttf")
 
 ROJO = "#7E1E22"
 ROJO_OSCURO = "#5C1114"
-CREMA = "#F5F1E6"
+CREMA = "#FFFFFF"
 TINTA = "#2A2622"
 
 

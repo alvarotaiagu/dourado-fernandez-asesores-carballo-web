@@ -8,12 +8,12 @@
   --verde: #5C1114;
   --verde-oscuro: #3E0B0D;
   --salvia: #B2413F;
-  --crema: #F5F1E6;
-  --crema-2: #EEE8DA;
-  --papel-claro: #FBF8F1;
+  --crema: #FFFFFF;
+  --crema-2: #F2F0EA;
+  --papel-claro: #FFFFFF;
   --oro: #9C2A2E;
   --oro-claro: #C4585C;
-  --oro-tinta: #7A1418;   /* rojo legible como texto sobre crema (9,6:1) */
+  --oro-tinta: #7A1418;   /* rojo legible como texto sobre crema/blanco (10,4:1) */
   --plata: #D9D2C2;
   --plata-oscura: #A69C88;
   --tinta: #2A2622;
