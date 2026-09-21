@@ -1,7 +1,7 @@
 {
-  "fecha": "2026-09-16T13:28:56.484Z",
-  "url": "http://127.0.0.1:8952/",
-  "total": 68,
+  "fecha": "2026-09-21T12:07:42.488Z",
+  "url": "http://127.0.0.1:8953/",
+  "total": 67,
   "fallos": 0,
   "resultados": [
     {
@@ -136,18 +136,6 @@
       "detalle": {
         "chars": 17,
         "visibles": 17,
-        "oroBg": "linear-gradient",
-        "plata": 2,
-        "texto": "Dourado & Fernández"
-      }
-    },
-    {
-      "prueba": "la D lleva el degradado oro y & y F el plata",
-      "ok": true,
-      "detalle": {
-        "chars": 17,
-        "visibles": 17,
-        "oroBg": "linear-gradient",
         "plata": 2,
         "texto": "Dourado & Fernández"
       }
@@ -163,11 +151,11 @@
       "detalle": {
         "todos": [
           {
-            "inicio": 221,
-            "dur": 139
+            "inicio": 136,
+            "dur": 131
           }
         ],
-        "load": 658
+        "load": 552
       }
     },
     {
@@ -386,7 +374,7 @@
     {
       "prueba": "el mapa se carga solo al pulsar, sin API key",
       "ok": true,
-      "detalle": "https://www.google.com/maps?q=Dourado%20%26%20Fern%C3%A1ndez%20Asesores%20SL%2C%20R%C3%BAa%20Fomento%2C%2052%2C%2015100%20Carballo%2C%20A%20Coru%C3%B1a&output=embed"
+      "detalle": "https://www.google.com/maps?q=Dourado%20%26%20Fern%C3%A1ndez%20SLU%2C%20R%C3%BAa%20Barcelona%2C%2010%201%C2%BA%2C%2015100%20Carballo%2C%20A%20Coru%C3%B1a&output=embed"
     },
     {
       "prueba": "el aviso legal se abre",
@@ -399,7 +387,7 @@
       "detalle": null
     },
     {
-      "prueba": "la cabecera pasa a tinta clara solo cuando el pie verde queda debajo",
+      "prueba": "la cabecera pasa a tinta clara solo cuando el pie rojo queda debajo",
       "ok": true,
       "detalle": {
         "solapa": false,
@@ -417,7 +405,7 @@
         "actual": "06",
         "pie": true,
         "alineadas": true,
-        "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+        "href": "https://wa.me/34671198366?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez."
       }
     },
     {
@@ -431,7 +419,7 @@
         "actual": "06",
         "pie": true,
         "alineadas": true,
-        "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+        "href": "https://wa.me/34671198366?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez."
       }
     },
     {
@@ -445,13 +433,13 @@
         "actual": "06",
         "pie": true,
         "alineadas": true,
-        "href": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+        "href": "https://wa.me/34671198366?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez."
       }
     },
     {
-      "prueba": "el WhatsApp enlaza a wa.me con el teléfono del despacho",
+      "prueba": "el WhatsApp enlaza a wa.me con el móvil del despacho",
       "ok": true,
-      "detalle": "https://wa.me/34981702760?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez%20Asesores."
+      "detalle": "https://wa.me/34671198366?text=Hola%2C%20quiero%20pedir%20cita%20con%20Dourado%20%26%20Fern%C3%A1ndez."
     },
     {
       "prueba": "a mitad de página el tick va por la mitad y solo parte de las marcas están cuadradas",

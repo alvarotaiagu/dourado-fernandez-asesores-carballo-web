@@ -1,21 +1,22 @@
 /* Dourado & Fernández Asesores · "Balance"
    El libro mayor como diseño: crema papel, renglones finos, columnas que
-   cuadran. Verde botella estructural, oro viejo para cifras y CTA, plata
-   fría para reglas y separadores. Serif de alto contraste para cifras. */
+   cuadran. Rojo de marca (el D&F real, tinta+precinto) estructural y para
+   cifras y CTA, gris cálido para reglas y separadores. Serif de alto
+   contraste para cifras. Paleta tomada de la tarjeta real del cliente. */
 
 :root {
-  --verde: #2F4A3E;
-  --verde-oscuro: #223830;
-  --salvia: #5E7F6B;
+  --verde: #5C1114;
+  --verde-oscuro: #3E0B0D;
+  --salvia: #B2413F;
   --crema: #F5F1E6;
   --crema-2: #EEE8DA;
   --papel-claro: #FBF8F1;
-  --oro: #B8944F;
-  --oro-claro: #D3B370;
-  --oro-tinta: #86672A;   /* oro legible como texto sobre crema (4,2:1) */
-  --plata: #C7CDD1;
-  --plata-oscura: #8E979D;
-  --tinta: #1E2B25;
+  --oro: #9C2A2E;
+  --oro-claro: #C4585C;
+  --oro-tinta: #7A1418;   /* rojo legible como texto sobre crema (9,6:1) */
+  --plata: #D9D2C2;
+  --plata-oscura: #A69C88;
+  --tinta: #2A2622;
   --tinta-2: color-mix(in srgb, var(--tinta) 68%, var(--crema));
   --tinta-3: color-mix(in srgb, var(--tinta) 48%, var(--crema));
   --renglon: color-mix(in srgb, var(--verde) 12%, transparent);
@@ -114,20 +115,13 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .pendiente-tag--claro { color: var(--crema); border-color: color-mix(in srgb, var(--oro) 70%, transparent); }
 .pendiente-nota { font-size: 0.86rem; color: var(--tinta-3); max-width: 60ch; margin-top: 1.2rem; }
 
-/* wordmark tipográfico: D en oro, & y F en plata, como las letras de la pared */
+/* wordmark tipográfico: tinta plana, como en la tarjeta real (sin metalizado) */
 .wm {
   font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 0, "WONK" 0;
   font-weight: 560; letter-spacing: -0.01em; white-space: nowrap;
 }
 .wm b, .wm-oro, .wm-plata { font-weight: inherit; }
-.wm-oro {
-  background: linear-gradient(170deg, #E2C784 0%, #B8944F 46%, #A47F3C 54%, #D3B370 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
-.wm-plata {
-  background: linear-gradient(170deg, #E9ECEE 0%, #B9C0C5 46%, #98A1A7 54%, #DCE1E4 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
+.wm-oro, .wm-plata { color: currentColor; }
 
 /* ---------- botones ---------- */
 
@@ -201,7 +195,9 @@ html.cortina-anima .cortina-pie { opacity: 0; letter-spacing: .58em; }
 .top--fijo { background: color-mix(in srgb, var(--crema) 92%, transparent); backdrop-filter: blur(8px); box-shadow: 0 1px 0 var(--plata); }
 .top--claro { color: var(--crema); }
 .top--claro.top--fijo { background: color-mix(in srgb, var(--verde-oscuro) 92%, transparent); box-shadow: 0 1px 0 color-mix(in srgb, var(--plata) 30%, transparent); }
-.top-marca { display: flex; flex-direction: column; line-height: 1.1; }
+.top-marca { display: flex; align-items: center; gap: 0.6rem; line-height: 1.1; }
+.top-marca-texto { display: flex; flex-direction: column; }
+.top-monograma { border-radius: 6px; flex-shrink: 0; }
 .top-marca .wm { font-size: 1.3rem; }
 .top-bajada { font-size: 0.66rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--tinta-3); margin-top: 0.15rem; }
 .top--claro .top-bajada { color: color-mix(in srgb, var(--crema) 70%, transparent); }

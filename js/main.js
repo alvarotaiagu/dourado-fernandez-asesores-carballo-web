@@ -583,7 +583,7 @@
         var caja = mapBtn.closest(".map-consent");
         var iframe = document.createElement("iframe");
         iframe.src = "https://www.google.com/maps?q=" +
-          encodeURIComponent("Dourado & Fernández Asesores SL, Rúa Fomento, 52, 15100 Carballo, A Coruña") +
+          encodeURIComponent("Dourado & Fernández SLU, Rúa Barcelona, 10 1º, 15100 Carballo, A Coruña") +
           "&output=embed";
         iframe.loading = "lazy";
         iframe.title = "Mapa de la ubicación de Dourado & Fernández Asesores en Carballo";

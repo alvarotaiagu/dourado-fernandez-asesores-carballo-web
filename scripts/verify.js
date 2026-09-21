@@ -66,21 +66,18 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     ok('el total cuadra en las dos columnas', libro.totales.join('/') === '7.786,00/7.786,00', libro.totales);
     ok('la regla se dibuja y el sello ✓ aparece', libro.regla > 0.99 && parseFloat(libro.sello) > 0.95, { regla: libro.regla, sello: libro.sello });
 
-    /* el wordmark: la D en oro y el & y la F en plata, con el char-reveal completo */
+    /* el wordmark: tinta plana (sin degradado, desde el rebranding a rojo real), con el char-reveal completo */
     const wm = await page.evaluate(() => {
       const chars = Array.from(document.querySelectorAll('.hero-wm .ch'));
-      const oro = document.querySelector('.hero-wm .ch.wm-oro');
       const plata = document.querySelectorAll('.hero-wm .ch.wm-plata');
       return {
         chars: chars.length,
         visibles: chars.filter(c => parseFloat(getComputedStyle(c).opacity) > 0.95).length,
-        oroBg: oro ? getComputedStyle(oro).backgroundImage.slice(0, 15) : null,
         plata: plata.length,
         texto: document.querySelector('.hero-wm').getAttribute('aria-label')
       };
     });
     ok('char-reveal del wordmark completado', wm.chars > 0 && wm.visibles === wm.chars, wm);
-    ok('la D lleva el degradado oro y & y F el plata', wm.oroBg === 'linear-gradient' && wm.plata === 2, wm);
     ok('el wordmark conserva el texto íntegro en aria-label', wm.texto === 'Dourado & Fernández', wm.texto);
 
     const lt = await page.evaluate(() => {
@@ -226,7 +223,7 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
       solapa: document.querySelector('.pie').getBoundingClientRect().top <= 38,
       claro: document.querySelector('.top').classList.contains('top--claro')
     }));
-    ok('la cabecera pasa a tinta clara solo cuando el pie verde queda debajo', pie.claro === pie.solapa, pie);
+    ok('la cabecera pasa a tinta clara solo cuando el pie rojo queda debajo', pie.claro === pie.solapa, pie);
 
     /* ---------- 7b. regla de márgenes y WhatsApp ---------- */
     await page.waitForTimeout(900);
@@ -243,7 +240,7 @@ const angulo = m => Math.round(Math.atan2(m.b, m.a) * 180 / Math.PI * 100) / 100
     ok('al final del scroll el tick llega abajo y las 6 marcas se han cuadrado', flotFin.tick > 99 && flotFin.cuadradas === 6 && flotFin.alineadas, flotFin);
     ok('la marca actual es la 06 y la regla pasa a tinta clara sobre el pie', flotFin.actual === '06' && flotFin.pie, flotFin);
     ok('la regla de márgenes y el WhatsApp son visibles fuera de la portada', flotFin.margen > 0.95 && flotFin.wa > 0.95, flotFin);
-    ok('el WhatsApp enlaza a wa.me con el teléfono del despacho', flotFin.href.startsWith('https://wa.me/34981702760'), flotFin.href);
+    ok('el WhatsApp enlaza a wa.me con el móvil del despacho', flotFin.href.startsWith('https://wa.me/34671198366'), flotFin.href);
 
     /* a mitad de página: unas marcas cuadradas y otras no, y las marcas llevan a su sección */
     await page.evaluate(() => window.scrollTo(0, (document.body.scrollHeight - innerHeight) * 0.5));

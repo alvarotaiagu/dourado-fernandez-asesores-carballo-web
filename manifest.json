@@ -1,11 +1,11 @@
 {
   "name": "Dourado & Fernández Asesores · Carballo",
   "short_name": "D&F Asesores",
-  "description": "Asesoría fiscal, laboral, contable y societaria en Carballo (A Coruña). Rúa Fomento, 52 · 981 70 27 60.",
+  "description": "Asesoría y correduría de seguros en Carballo (A Coruña). Rúa Barcelona, 10 1º · 981 70 27 60.",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#F5F1E6",
-  "theme_color": "#2F4A3E",
+  "theme_color": "#7E1E22",
   "lang": "es",
   "icons": [
     { "src": "assets/img/logo/icon-192.png", "sizes": "192x192", "type": "image/png" },
