@@ -17,7 +17,15 @@ Salida en assets/img/logo/:
   icon.svg           monograma solo, cuadrado, para favicon (fondo rojo)
   (los PNG y og.png los rasteriza scripts/generate_icons.js)
 
-Uso: python scripts/generate_brand.py   (descarga Fraunces variable a %TEMP%/fonts)
+Tipografía: el monograma es dibujo propio (ver más abajo), pero el
+wordmark "dourado & fernández" y la marquilla "ASESORÍA · CORREDORÍA" de
+la tarjeta real son una sans geométrica de terminales redondeados y
+trazo uniforme (o minúscula de una sola forma, & simple en bucle) — no
+la Fraunces serif que llevaba la primera recreación del 2026-09-16.
+Corregido el 2026-09-21 (el cliente señaló la diferencia) a Poppins, la
+sans geométrica más próxima disponible en Google Fonts.
+
+Uso: python scripts/generate_brand.py   (descarga Fraunces y Poppins a %TEMP%/fonts)
 """
 import os
 import urllib.request
@@ -33,6 +41,11 @@ os.makedirs(OUT, exist_ok=True)
 FONT_DIR = os.path.join(os.environ.get("TEMP", "/tmp"), "fonts")
 FONT_URL = "https://github.com/google/fonts/raw/main/ofl/fraunces/Fraunces%5BSOFT%2CWONK%2Copsz%2Cwght%5D.ttf"
 FONT_PATH = os.path.join(FONT_DIR, "Fraunces[SOFT,WONK,opsz,wght].ttf")
+
+SANS_URLS = {
+    500: "https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-Medium.ttf",
+    600: "https://github.com/google/fonts/raw/main/ofl/poppins/Poppins-SemiBold.ttf",
+}
 
 ROJO = "#7E1E22"
 ROJO_OSCURO = "#5C1114"
@@ -63,6 +76,17 @@ def ensure_font():
     return FONT_PATH
 
 
+def ensure_sans(wght):
+    os.makedirs(FONT_DIR, exist_ok=True)
+    url = SANS_URLS[wght]
+    path = os.path.join(FONT_DIR, os.path.basename(url))
+    if not os.path.exists(path):
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=180) as r, open(path, "wb") as f:
+            f.write(r.read())
+    return path
+
+
 _cache = {}
 
 
@@ -74,6 +98,15 @@ def instance(wght, opsz=144):
             f, {"wght": wght, "opsz": opsz, "SOFT": 0, "WONK": 0}, inplace=True
         )
     return _cache[key]
+
+
+_cache_sans = {}
+
+
+def instance_sans(wght):
+    if wght not in _cache_sans:
+        _cache_sans[wght] = TTFont(ensure_sans(wght))
+    return _cache_sans[wght]
 
 
 def glyph_runs(font, text, size, tracking=0.0):
@@ -126,10 +159,11 @@ def paths(runs, color_for):
 
 
 def wordmark(tinta):
-    """'dourado & fernández': una sola tinta, minúsculas como en la tarjeta real."""
-    font = instance(480)
+    """'dourado & fernández': una sola tinta, minúsculas, Poppins Medium
+    (sans geométrica de la tarjeta real, no la Fraunces del resto del sitio)."""
+    font = instance_sans(500)
     size = 100.0
-    runs, w = glyph_runs(font, "dourado & fernández", size, tracking=-0.2)
+    runs, w = glyph_runs(font, "dourado & fernández", size, tracking=0.0)
     cap = font["OS/2"].sTypoAscender * size / font["head"].unitsPerEm
     desc = -font["hhea"].descent * size / font["head"].unitsPerEm
     body = f'<g transform="translate(0,{cap:.2f})">{paths(runs, lambda i, c: tinta)}</g>'
@@ -137,10 +171,10 @@ def wordmark(tinta):
 
 
 def tagline(color):
-    """'asesoría · corredoría', versalitas espaciadas, como en la tarjeta."""
-    font = instance(560)
+    """'asesoría · corredoría', versalitas espaciadas, Poppins SemiBold, como en la tarjeta."""
+    font = instance_sans(600)
     size = 38.0
-    runs, w = glyph_runs(font, "ASESORÍA · CORREDORÍA", size, tracking=size * 0.12)
+    runs, w = glyph_runs(font, "ASESORÍA · CORREDORÍA", size, tracking=size * 0.14)
     cap = font["OS/2"].sCapHeight * size / font["head"].unitsPerEm
     body = f'<g transform="translate(0,{cap:.2f})">{paths(runs, lambda i, c: color)}</g>'
     return body, w, cap

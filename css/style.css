@@ -22,6 +22,7 @@
   --renglon: color-mix(in srgb, var(--verde) 12%, transparent);
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --sans: "Inter", "Public Sans", system-ui, sans-serif;
+  --sans-marca: "Poppins", "Inter", system-ui, sans-serif;   /* la tipografía real de la tarjeta: solo para el wordmark/nombre, no para titulares */
   --alto-top: 76px;
   --margen: clamp(1rem, 4vw, 4rem);
   --ancho: 1320px;
@@ -129,10 +130,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .pendiente-tag--claro { color: var(--crema); border-color: color-mix(in srgb, var(--oro) 70%, transparent); }
 .pendiente-nota { font-size: 0.86rem; color: var(--tinta-3); max-width: 60ch; margin-top: 1.2rem; }
 
-/* wordmark tipográfico: tinta plana, como en la tarjeta real (sin metalizado) */
+/* wordmark tipográfico: Poppins (la sans de la tarjeta real), tinta plana.
+   Ojo: es la ÚNICA excepción a Fraunces en el sitio — el wordmark literal
+   lleva la tipografía real de la marca, el resto de titulares se queda en
+   la serif editorial del "Balance" (son decisiones distintas a propósito). */
 .wm {
-  font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 0, "WONK" 0;
-  font-weight: 560; letter-spacing: -0.01em; white-space: nowrap;
+  font-family: var(--sans-marca); font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
 }
 .wm b, .wm-oro, .wm-plata { font-weight: inherit; }
 .wm-oro, .wm-plata { color: currentColor; }
@@ -180,7 +183,7 @@ html.cortina-puesta { overflow: hidden; }
 .cortina-centro { position: relative; display: grid; justify-items: center; gap: .85rem; padding: 0 1.5rem; text-align: center; }
 .cortina-marca { overflow: hidden; padding-bottom: .12em; }
 .cortina-marca span {
-  display: block; font-family: var(--serif); font-weight: 400;
+  display: block; font-family: var(--sans-marca); font-weight: 500;
   font-size: clamp(1.9rem, 6vw, 3.4rem); line-height: 1.05; color: var(--crema);
 }
 /* la raya de totales: doble, como la que se traza bajo la suma */
@@ -250,8 +253,8 @@ html.cortina-anima .cortina-pie { opacity: 0; letter-spacing: .58em; }
   display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 6vw, 6rem); align-items: center;
 }
 .hero-wm {
-  font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 0, "WONK" 0;
-  font-weight: 560; font-size: clamp(2.5rem, 6.4vw, 5.6rem); line-height: 1; letter-spacing: -0.02em;
+  font-family: var(--sans-marca); font-weight: 500;
+  font-size: clamp(2.5rem, 6.4vw, 5.6rem); line-height: 1; letter-spacing: -0.02em;
   margin: 0 0 1.2rem; text-wrap: balance;
 }
 .hero-wm .wm-oro, .hero-wm .wm-plata, .hero-wm .ch { display: inline-block; }
